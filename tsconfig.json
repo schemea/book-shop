@@ -7,17 +7,24 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "module": "esnext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2015",
     "allowSyntheticDefaultImports": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
+    // "typeRoots": [
+    //   "node_modules/@types",
+    //   "src/app/shared/@types"
+    // ],
+    "paths": {
+      "shared/*": ["./src/app/shared/*"],
+      "app/*": ["./src/app/*"],
+      "services/*": ["./src/app/services/*"]
+    },
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "esModuleInterop": true
   }
 }
