@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Book } from 'shared/book';
 
 const baseURL = 'https://www.googleapis.com/books/v1/';
 
@@ -84,7 +83,7 @@ export class GoogleAPIService {
       totalItems = json.totalItems;
     }
     for (const data of json.items) {
-      const book = new Book();
+      const book: Book = { identifiers: new Map() } as Book;
       const volumeInfo = data.volumeInfo;
 
       Object.assign(book, {
@@ -93,7 +92,7 @@ export class GoogleAPIService {
         description: volumeInfo.description,
         imageLinks: volumeInfo.imageLinks,
         rating: volumeInfo.ratingsCount,
-        pagesCount: volumeInfo.pageCount,
+        pageCount: volumeInfo.pageCount,
         language: volumeInfo.language
       });
       if (volumeInfo.industryIdentifiers) {
