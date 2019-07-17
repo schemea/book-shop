@@ -1,0 +1,16 @@
+<div class="thumbnail">
+  <img [src]="book?.pickThumbnail(thumbnailSize) || ''" alt="" />
+</div>
+<div class="info">
+  Title: {{book?.title}} <br>
+  <ng-container *ngIf="book?.authors">
+    Authors: {{book?.authors?.join(", ")}}
+    <br>
+  </ng-container>
+  Price:
+  <ng-container *ngIf="book?.price; else saleability">
+    {{ book.price.amount }}{{ book.price.currencyCode === "EUR" ? "€" : "$" }}
+  </ng-container>
+  <ng-template #saleability>{{book?.saleability}}</ng-template>
+
+</div>

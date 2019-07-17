@@ -1,0 +1,36 @@
+@import (css) url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+:host {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px;
+}
+
+:host:nth-child(even){
+  background-color: gray;
+}
+
+.thumbnail {
+  flex-basis: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 300px;
+  img {
+    height: 100%;
+    max-width: 100%;
+  }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  font-family: Roboto, sans-serif;
+
+}
