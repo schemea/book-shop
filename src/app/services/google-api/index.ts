@@ -26,7 +26,6 @@ export class GoogleAPIService {
         }
       }
     }
-    (url as URL).searchParams.set("key", "AIzaSyBRxgiq3B_RjVUl8CA4SisAJmKGrzt7xgQ");
     return this.http.get(url.toString()) as Observable<T>;
   }
 
@@ -46,25 +45,33 @@ export class GoogleAPIService {
     let json: GoogleAPI.VolumesList;
     let totalItems: number;
 
+
     let req = request instanceof SearchRequest ? (params ? request.clone() : request) : new SearchRequest(request);
     if (params) {
       req = Object.assign(req, params);
     }
-    try {
-      json = await this.request(req).toPromise();
-      if (!totalItems) {
-        totalItems = json.totalItems;
-      }
-      if (json.items) {
-        for (const data of json.items) {
-          books.push(new Book(data));
+
+    const offset = req.startIndex;
+    const newReq = req.clone();
+    do {
+      newReq.maxResults = Math.min(40, newReq.maxResults);
+      try {
+        json = await this.request(newReq).toPromise();
+        if (!totalItems) {
+          totalItems = json.totalItems;
         }
+        if (json.items) {
+          for (const data of json.items) {
+            books.push(new Book(data));
+          }
+        }
+      } catch (e) {
+        console.error(e);
+        console.log("JSON--------------------------------------------");
+        console.log(json);
       }
-    } catch (e) {
-      console.error(e);
-      console.log("JSON--------------------------------------------");
-      console.log(json);
-    }
+      newReq.startIndex += json.items.length;
+    } while (books.length < req.maxResults && totalItems > 0);
 
     const next = req.clone();
     next.startIndex = req.startIndex + books.length;

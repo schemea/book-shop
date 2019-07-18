@@ -1,16 +1,25 @@
-<div class="thumbnail">
-  <img [src]="book?.pickThumbnail(thumbnailSize) || ''" alt="" />
-</div>
-<div class="info">
-  Title: {{book?.title}} <br>
-  <ng-container *ngIf="book?.authors">
-    Authors: {{book?.authors?.join(", ")}}
-    <br>
-  </ng-container>
-  Price:
-  <ng-container *ngIf="book?.price; else saleability">
-    {{ book.price.amount }}{{ book.price.currencyCode === "EUR" ? "€" : "$" }}
-  </ng-container>
-  <ng-template #saleability>{{book?.saleability}}</ng-template>
 
-</div>
+  <div class="thumbnail card-image">
+    <img [src]="book?.pickThumbnail(thumbnailSize) || ''" alt="" />
+  </div>
+  <div class="info card-stacked">
+    <div class="card-content">
+      Title: {{book?.title}} <br>
+      <ng-container *ngIf="book?.authors">
+        Authors: {{book?.authors?.join(", ")}}
+        <br>
+      </ng-container>
+      <span [ngSwitch]="book?.saleability">
+        <ng-container *ngSwitchCase="'FOR_SALE'">
+          Price: {{ book.price.amount }}{{ book.price.currencyCode === "EUR" ? "€" : "$" }}
+        </ng-container>
+        <ng-container *ngSwitchCase="'NOT_FOR_SALE'">
+          Book not for sale
+        </ng-container>
+        <ng-container *ngSwitchCase="'FREE'">
+          Price: FREE
+        </ng-container>
+      </span>
+    </div>
+
+  </div>

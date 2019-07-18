@@ -19,9 +19,13 @@
     "@angular/platform-browser": "~8.0.1",
     "@angular/platform-browser-dynamic": "~8.0.1",
     "@angular/router": "~8.0.1",
+    "@types/materialize-css": "^1.0.6",
     "@types/request-promise": "^4.1.44",
+    "materialize-css": "^1.0.0",
+    "node-waves": "^0.7.6",
     "request-promise": "^4.2.4",
     "rxjs": "~6.4.0",
+    "sass": "^1.22.5",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"
   },
