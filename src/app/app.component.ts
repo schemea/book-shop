@@ -21,7 +21,7 @@ export class AppComponent implements AfterViewInit {
   books: Book[];
   constructor(private gapi: GoogleAPIService) {
     // gapi.request(new URL('https://www.googleapis.com/books/v1/volumes?q=Alice'), {}).then(console.log).catch(console.error);
-    gapi.searchBooks("Alice").then(resp => {
+    gapi.searchBooks("Alice", { maxResults: 100 }).then(resp => {
       this.books = resp.items;
     });
   }

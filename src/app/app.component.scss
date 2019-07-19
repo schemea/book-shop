@@ -9,8 +9,9 @@ h1{
 .book-collection{
   display: grid;
   // grid-auto-rows: auto;
-  grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
-  grid-column-gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 600px));
+  grid-column-gap: 20px;
 
   padding: 10px;
+  justify-content: center;
 }

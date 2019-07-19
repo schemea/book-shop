@@ -6,6 +6,10 @@ import { Observable } from "rxjs";
 import { baseURL } from "./constants";
 import { map, finalize } from "rxjs/operators";
 
+type SearchParams = {
+  [k in keyof SearchRequest]?: SearchRequest[k]
+};
+
 @Injectable({
   providedIn: "root"
 })
@@ -38,9 +42,9 @@ export class GoogleAPIService {
     return this.searchBooks(req).then(obj => obj.items[0]);
   }
 
-  async searchBooks(query: string, params?: SearchRequest): Promise<SearchResponse>;
+  async searchBooks(query: string, params?: SearchParams): Promise<SearchResponse>;
   async searchBooks(request: SearchRequest | BookQuery): Promise<SearchResponse>;
-  async searchBooks(request: SearchRequest | BookQuery | string, params?: SearchRequest): Promise<SearchResponse> {
+  async searchBooks(request: SearchRequest | BookQuery | string, params?: SearchParams): Promise<SearchResponse> {
     const books: Book[] = [];
     let json: GoogleAPI.VolumesList;
     let totalItems: number;

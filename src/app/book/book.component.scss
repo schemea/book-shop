@@ -1,32 +1,122 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
-:host {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 10px;
+// :host {
+//   display: flex;
+//   flex-direction: row;
+//   align-items: center;
+//   justify-content: flex-start;
+//   padding: 10px;
+// }
+$border: 1px solid #ccc;
+
+.card {
+  height: 230px;
+  background-color: aquamarine;
+  border: $border;
 }
 
-.thumbnail {
-  flex-basis: 150px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  height: 200px;
-  img {
-    max-height: 100%;
-    max-width: 100%;
-  }
+.authors {
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: calc(100% - 35px);
 }
 
-.info {
+.card-image {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
 
-  font-family: Roboto, sans-serif;
+  padding: 10px;
+  box-sizing: border-box;
+  max-height: 100%;
+  width: 150px;
 
+  &>div {
+    position: relative;
+
+    &>div{
+      position: absolute;
+      bottom: 10px;
+
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+    }
+
+    span{
+      padding: 3px 10px;
+      background-color: rgba(0,0,0, 0.5);
+      border-radius: 5px;
+      border: 1px solid white;
+      color: white;
+    }
+  }
+
+  border-right: $border;
+}
+
+.card-content {
+  background-color: antiquewhite;
+  padding-top: 2.2em;
+  padding-bottom: 0.8em;
+  position: relative;
+
+  box-sizing: content-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+img {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.title {
+  padding: 3px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: aliceblue;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+:host .waves-ripple {
+  z-index: 100;
+  position: absolute;
+}
+
+.authors {
+  font-size: 0.9em;
+  font-style: italic;
+  text-align: right;
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+.description {
+  flex-basis: 100px;
+  flex-grow: 1;
+  overflow: hidden;
+
+  text-align: justify;
+
+  color: #444;
+}
+
+.rating {
+  display: flex;
+  flex-direction: row;
+  font-size: 0.9em;
+
+  justify-content: center;
+  // flex-grow: 1;
+  align-items: flex-end;
 }

@@ -1,2 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import url("https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css");
+
+app-book .waves-effect .waves-ripple{
+  z-index: 1;
+}
