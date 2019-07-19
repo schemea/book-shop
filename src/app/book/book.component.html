@@ -1,7 +1,7 @@
-<div class="waves-effect waves-teal card horizontal modal-trigger">
+<div class="waves-effect waves-teal card horizontal modal-trigger" [attr.data-trigger]="book?.googleID" [attr.href]="'#' + book?.googleID" (click)="showDetails()" >
   <div class="card-image">
     <div>
-      <img [src]="book?.pickThumbnail(thumbnailSize) || ''" alt="" />
+      <img [src]="book?.pickThumbnail(thumbnailSize) || ''" alt="thumbnail" />
       <div *ngIf="book?.saleability !== 'NOT_FOR_SALE'">
         <span [ngSwitch]="book?.saleability">
           <ng-container *ngSwitchCase="'FOR_SALE'">
@@ -17,7 +17,6 @@
   <div class="card-stacked">
     <div class="title">{{book?.title}}</div>
     <div class="card-content">
-      <!-- Title: {{book?.title}} <br> -->
       <span *ngIf="book?.authors" class="authors">
         by {{book?.authors?.join(", ")}}
         <br>
@@ -29,5 +28,18 @@
       </div>
     </div>
 
+  </div>
+</div>
+
+<div [id]="book?.googleID" #details class="modal">
+  <div class="modal-content">
+    <div class="title">{{book?.title}}</div>
+    <div class="info">
+      <div class="cover">
+        <img [src]="book?.pickThumbnail('small')" alt="thumbnail">
+      </div>
+      <div class="details">
+      </div>
+    </div>
   </div>
 </div>

@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, HostBinding, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, Input, HostBinding, ViewEncapsulation, ViewChild, AfterViewInit, ElementRef } from "@angular/core";
 import { GoogleAPIService } from "services/google-api";
 import { Book } from "shared/book";
-import { SearchResponse, SearchRequest } from "app/services/google-api/listing";
+
+declare var M: typeof import("materialize-css");
 
 @Component({
   selector: "app-book",
@@ -11,9 +12,11 @@ import { SearchResponse, SearchRequest } from "app/services/google-api/listing";
     GoogleAPIService
   ]
 })
-export class BookComponent implements OnInit {
+export class BookComponent implements OnInit, AfterViewInit {
   @Input() book: Book;
   @Input() thumbnailSize: keyof GoogleAPI.ThumbnailMap;
+  @ViewChild("details", null) details: ElementRef<HTMLDivElement>;
+  modal: M.Modal;
 
   constructor(private gapi: GoogleAPIService) {
     if (!this.thumbnailSize) {
@@ -25,6 +28,12 @@ export class BookComponent implements OnInit {
     if (this.thumbnailSize !== "thumbnail" && this.thumbnailSize !== "smallThumbnail") {
       this.gapi.retrieveHighResThumbnails(this.book);
     }
+  }
+
+  ngAfterViewInit() {
+    console.log(this.details);
+
+    this.modal = M.Modal.init(this.details.nativeElement);
   }
 
   getStars() {
@@ -46,5 +55,10 @@ export class BookComponent implements OnInit {
     } else {
       return this.book.description;
     }
+  }
+
+  showDetails() {
+    this.gapi.retrieveHighResThumbnails(this.book);
+    this.modal.open();
   }
 }

@@ -73,6 +73,7 @@ export class GoogleAPIService {
         console.error(e);
         console.log("JSON--------------------------------------------");
         console.log(json);
+        break;
       }
       newReq.startIndex += json.items.length;
     } while (books.length < req.maxResults && totalItems > 0);
@@ -99,6 +100,9 @@ export class GoogleAPIService {
   }
 
   retrieveHighResThumbnails(book: Book) {
+    if (Object.keys(book.imageLinks).length > 2) {
+      return;
+    }
     return this.getVolumeByURL(book.selfLink).subscribe(newBook => {
       book.imageLinks = newBook.imageLinks;
     });

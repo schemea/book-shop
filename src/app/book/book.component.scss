@@ -120,3 +120,20 @@ img {
   // flex-grow: 1;
   align-items: flex-end;
 }
+
+.modal .info{
+
+  .cover{
+    height: 300px;
+    width: 200px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img{
+      max-height: 100%;
+      max-width: 100%;
+    }
+  }
+}
