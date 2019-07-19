@@ -13,11 +13,18 @@ import { Book } from "shared/book";
 export class AppComponent implements AfterViewInit {
   title = "book-shop";
   books: Book[];
+  searchQuery: string;
+
   constructor(private gapi: GoogleAPIService) {
-    gapi.searchBooks("Guillaume Musso", { maxResults: 100 }).then(resp => {
+    
+  }
+
+  search() {
+    this.gapi.searchBooks(this.searchQuery, { maxResults: 100 }).then(resp => {
       this.books = resp.items;
     });
   }
+
   ngAfterViewInit(): void {
     // M.Modal.init(document.querySelectorAll(".modal"));
   }

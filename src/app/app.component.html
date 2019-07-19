@@ -1,6 +1,8 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <h1>Book Shop</h1>
 
+<input [(ngModel)]="searchQuery" (keydown.enter)="search()"/>
+
 <div class="book-collection">
   <ng-container *ngFor="let book of books">
     <app-book *ngIf="book.saleability!=='NOT_FOR_SALE'" [book]="book" [thumbnailSize]="'thumbnail'"></app-book>
