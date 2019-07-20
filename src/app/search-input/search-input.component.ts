@@ -29,7 +29,7 @@ export class SearchInputComponent implements OnInit, OnDestroy {
     });
   }
 
-  onChange(event: Event) {
+  onChange() {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
@@ -49,9 +49,15 @@ export class SearchInputComponent implements OnInit, OnDestroy {
     this.subscription = null;
   }
 
-  onSearch(event: Event) {
-    event.preventDefault();
-    event.stopImmediatePropagation();
+  onEnter(event: Event) {
+    if (this.instance.activeIndex < 0) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      this.onSearch();
+    }
+  }
+
+  onSearch() {
     if (this.subscription) {
       this.subscription.unsubscribe();
       this.subscription = null;
