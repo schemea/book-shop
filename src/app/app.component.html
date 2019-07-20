@@ -2,12 +2,12 @@
   <h1>Book Shop</h1>
 
 
-  <div class="input-field">
+  <!-- <div class="input-field">
     <input type="text" id="searchQuery" [(ngModel)]="searchQuery" (keydown.enter)="search()" />
     <label for="searchQuery">Search a book</label>
-  </div>
+  </div> -->
 
-  <app-search-input label="Search a book"></app-search-input>
+  <app-search-input label="Search a book" (search)="search($event.keywords)"></app-search-input>
 
   <div class="book-collection">
     <ng-container *ngFor="let book of books">

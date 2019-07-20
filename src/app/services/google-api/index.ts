@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Book } from "shared/book";
 import { SearchRequest, SearchResponse, BookQuery } from "./listing";
 import { Observable } from "rxjs";
@@ -26,6 +26,18 @@ class SearchObservable extends Observable<Book> {
 
 }
 
+interface RequestOptions {
+  headers?: HttpHeaders | {
+    [header: string]: string | string[];
+  };
+  observe?: any;
+  params?: HttpParams | {
+    [param: string]: string | string[];
+  };
+  reportProgress?: boolean;
+  responseType?: any;
+  withCredentials?: boolean;
+}
 @Injectable({
   providedIn: "root"
 })
@@ -33,20 +45,18 @@ export class GoogleAPIService {
 
   constructor(private http: HttpClient) { }
 
-  request<T>(url: SearchRequest): Observable<GoogleAPI.VolumesList>;
-  request<T>(url: URL | string, params?: { [key: string]: string | number }): Observable<T>;
-  request<T>(url: URL | string | { toString: () => string }, params?: { [key: string]: string | number }): Observable<T> {
+  request(url: SearchRequest): Observable<GoogleAPI.VolumesList>;
+  request<T>(url: URL | string, options?: RequestOptions): Observable<T>;
+  request<T>(url: URL | any, options: RequestOptions = {}) {
     if (!(url instanceof URL)) {
-      url = new URL(url as string);
+      url = new URL(url as string, window.location as any);
     }
-    if (params) {
-      for (const key in params) {
-        if (params.hasOwnProperty(key)) {
-          (url as URL).searchParams.set(key, params[key] as string);
-        }
+    for (const key in options.params) {
+      if (options.params.hasOwnProperty(key)) {
+        (url as URL).searchParams.set(key, options.params[key] as string);
       }
     }
-    return this.http.get(url.toString()) as Observable<T>;
+    return this.http.get(url.toString(), options);
   }
 
   async getBookByISBN(value: string) {
@@ -127,19 +137,25 @@ export class GoogleAPIService {
     };
   }
 
-  fetchAutocompletion(query: string): Observable<{[k: string]: string}> {
-    return this.request<string>(autoCompletion + query).pipe(map(script => {
-      const regex = /\[([\s,]*\[[^\[\]]+\])+\s*\]/;
-      const match = regex.exec(script);
-      if (match) {
-        const arr = (JSON.parse(match[0]) as [string, string][]).reduce((prev, curr) => {
-          return Object.assign(prev, { [curr[0]]: curr[1] });
-        }, {});
-        return arr;
-      } else {
-        throw new Error("No regex match found in script");
+  fetchAutocompletion(query: string): Observable<{ [k: string]: string }> {
+    return this.request<string>(
+      "/proxy/" + autoCompletion + query,
+      {
+        responseType: "text"
       }
-    }));
+    ).pipe(
+      map(script => {
+        const regex = /\[([\s,]*\[[^\[\]]+\])+\s*\]/;
+        const match = regex.exec(script);
+        if (match) {
+          const arr = JSON.parse(match[0]);
+          const ret = arr.reduce((prev, curr) => {
+            return Object.assign(prev, { [curr[0]]: curr[1] });
+          }, {});
+          return ret;
+        }
+        return {};
+      }));
   }
 
   getVolumeByURL(url: string) {

@@ -20,8 +20,9 @@ export class ImageComponent implements OnInit, OnChanges {
     // Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     // Add '${implements OnChanges}' to the class.
 
-    console.log(changes);
-    this.currentImage = this.src;
+    if (changes.src) {
+      this.currentImage = changes.src.currentValue;
+    }
   }
 
 }

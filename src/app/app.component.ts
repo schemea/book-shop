@@ -26,8 +26,8 @@ export class AppComponent implements AfterContentInit {
     this.ref.nativeElement.classList.remove("loading-dom");
   }
 
-  search() {
-    this.gapi.searchBooks(this.searchQuery, { maxResults: 100 }).then(resp => {
+  search(keywords: string) {
+    this.gapi.searchBooks(keywords, { maxResults: 100 }).then(resp => {
       this.books = resp.items;
     });
   }

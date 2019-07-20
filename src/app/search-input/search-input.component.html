@@ -1,4 +1,4 @@
 <div class="input-field">
-  <input #input type="text" (input)="onChange($event)">
+  <input #input type="text" (input)="onChange($event)" (keypress.enter)="onSearch()">
   <label (click)="input.focus()">{{label}}</label>
 </div>
