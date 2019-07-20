@@ -39,6 +39,7 @@ export class BookQuery {
 
 export class SearchRequest {
   query: BookQuery;
+  filter = (book: GoogleAPI.VolumeResource) => true;
 
   constructor(query?: BookQuery | string, public startIndex: number = 0, public maxResults?: number) {
     this.query = query instanceof BookQuery ? query : new BookQuery(query);
@@ -51,14 +52,10 @@ export class SearchRequest {
   toURL() {
     const url = new URL("volumes", baseURL);
     url.searchParams.set("q", this.query.toString());
-    for (const key in this) {
-      if (this.hasOwnProperty(key)) {
-        const value: string = this[key] as any;
-        if (key !== "query" as keyof SearchRequest && value) {
-          url.searchParams.set(key, value);
-        }
-      }
-    }
+
+    const keys: (keyof SearchRequest)[] = ["startIndex", "maxResults"];
+    url.searchParams.set("startIndex", this.startIndex.toString());
+    url.searchParams.set("maxResults", Math.min(this.maxResults, 40).toString());
     return url;
   }
 

@@ -10,6 +10,22 @@ type SearchParams = {
   [k in keyof SearchRequest]?: SearchRequest[k]
 };
 
+function makeSearchRequest(request: SearchRequest | BookQuery | string, params: SearchParams): SearchRequest {
+  let req = request instanceof SearchRequest ? (params ? request.clone() : request) : new SearchRequest(request);
+  if (params) {
+    req = Object.assign(req, params);
+  }
+  return req;
+}
+
+class SearchObservable extends Observable<Book> {
+  constructor(...arr: any[]) {
+    super(...arr);
+  }
+
+
+}
+
 @Injectable({
   providedIn: "root"
 })
@@ -42,6 +58,33 @@ export class GoogleAPIService {
     return this.searchBooks(req).then(obj => obj.items[0]);
   }
 
+  createObservableForSearch(query: string, params?: SearchParams): Observable<Book>;
+  createObservableForSearch(request: SearchRequest | BookQuery): Observable<Book>;
+  createObservableForSearch(request: SearchRequest | BookQuery | string, params?: SearchParams): Observable<Book> {
+    const req = makeSearchRequest(request, params);
+    let json: GoogleAPI.VolumesList;
+    let count = 0;
+    return new Observable<Book>((subscriber) => {
+      (async () => {
+        try {
+          do {
+            json = await this.request(req).toPromise();
+            for (const data of json.items) {
+              if (req.filter(data)) {
+                subscriber.next(new Book(data));
+              }
+            }
+            count += json.items.length;
+          }
+          while (count < req.maxResults && json.items.length > 0);
+        } catch (e) {
+          subscriber.error(e);
+        }
+        subscriber.complete();
+      })();
+    });
+  }
+
   async searchBooks(query: string, params?: SearchParams): Promise<SearchResponse>;
   async searchBooks(request: SearchRequest | BookQuery): Promise<SearchResponse>;
   async searchBooks(request: SearchRequest | BookQuery | string, params?: SearchParams): Promise<SearchResponse> {
@@ -49,16 +92,9 @@ export class GoogleAPIService {
     let json: GoogleAPI.VolumesList;
     let totalItems: number;
 
-
-    let req = request instanceof SearchRequest ? (params ? request.clone() : request) : new SearchRequest(request);
-    if (params) {
-      req = Object.assign(req, params);
-    }
-
-    const offset = req.startIndex;
-    const newReq = req.clone();
+    request = makeSearchRequest(request, params);
+    const newReq = request.clone();
     do {
-      newReq.maxResults = Math.min(40, newReq.maxResults);
       try {
         json = await this.request(newReq).toPromise();
         if (!totalItems) {
@@ -66,8 +102,12 @@ export class GoogleAPIService {
         }
         if (json.items) {
           for (const data of json.items) {
-            books.push(new Book(data));
+            if (request.filter(data)) {
+              books.push(new Book(data));
+            }
           }
+        } else {
+          break;
         }
       } catch (e) {
         console.error(e);
@@ -76,15 +116,13 @@ export class GoogleAPIService {
         break;
       }
       newReq.startIndex += json.items.length;
-    } while (books.length < req.maxResults && totalItems > 0);
+    } while (books.length < request.maxResults && (json.totalItems - json.items.length) > 0);
 
-    const next = req.clone();
-    next.startIndex = req.startIndex + books.length;
     return {
-      request: req,
+      request,
       items: books,
-      startIndex: req.startIndex,
-      next,
+      startIndex: request.startIndex,
+      next: newReq,
       totalItems
     };
   }

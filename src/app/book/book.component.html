@@ -1,5 +1,5 @@
-<div class="waves-effect waves-teal card horizontal modal-trigger" [attr.data-trigger]="book?.googleID" [attr.href]="'#' + book?.googleID" (click)="showDetails()" >
-  <div class="card-image">
+<div class="waves-effect waves-teal card horizontal" (click)="showDetails()">
+  <div class="card-image cover">
     <div>
       <img [src]="book?.pickThumbnail(thumbnailSize) || ''" alt="thumbnail" />
       <div *ngIf="book?.saleability !== 'NOT_FOR_SALE'">
@@ -19,7 +19,6 @@
     <div class="card-content">
       <span *ngIf="book?.authors" class="authors">
         by {{book?.authors?.join(", ")}}
-        <br>
       </span>
 
       <div class="description" [innerHTML]="getDescription()"></div>
@@ -31,14 +30,31 @@
   </div>
 </div>
 
-<div [id]="book?.googleID" #details class="modal">
+<div #details class="modal">
   <div class="modal-content">
     <div class="title">{{book?.title}}</div>
     <div class="info">
+      <span *ngIf="book?.authors" class="authors">
+        by {{book?.authors?.join(", ")}}
+      </span>
       <div class="cover">
-        <img [src]="book?.pickThumbnail('small')" alt="thumbnail">
+        <div>
+          <img [src]="book?.pickThumbnail('small') || ''" alt="thumbnail" />
+          <div *ngIf="book?.saleability !== 'NOT_FOR_SALE'">
+            <span [ngSwitch]="book?.saleability">
+              <ng-container *ngSwitchCase="'FOR_SALE'">
+                {{ book.price.amount }}{{ book.price.currencyCode === "EUR" ? "€" : "$" }}
+              </ng-container>
+              <ng-container *ngSwitchCase="'FREE'">
+                FREE
+              </ng-container>
+            </span>
+          </div>
+        </div>
       </div>
       <div class="details">
+        ISBN {{book.identifiers.get("ISBN_13")}}
+        Genre: {{book.genre}}
       </div>
     </div>
   </div>

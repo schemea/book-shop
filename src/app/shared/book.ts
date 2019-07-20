@@ -12,6 +12,7 @@ export class Book implements Book {
   identifiers: Map<string, string> = new Map();
   rating?: number;
   textSnippet?: string;
+  genre: string[];
 
   imageLinks: GoogleAPI.ThumbnailMap;
 
@@ -36,7 +37,8 @@ export class Book implements Book {
       language: volumeInfo.language,
       price: volume.saleInfo.retailPrice,
       saleability: volume.saleInfo.saleability,
-      textSnippet: volume.searchInfo && volume.searchInfo.textSnippet
+      textSnippet: volume.searchInfo && volume.searchInfo.textSnippet,
+      genre: volumeInfo.categories
     } as Book);
     if (volumeInfo.industryIdentifiers) {
       for (const id of volumeInfo.industryIdentifiers) {

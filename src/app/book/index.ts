@@ -31,9 +31,10 @@ export class BookComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    console.log(this.details);
-
-    this.modal = M.Modal.init(this.details.nativeElement);
+    this.modal = M.Modal.init(this.details.nativeElement, {
+      inDuration: 400,
+      outDuration: 300
+    });
   }
 
   getStars() {
