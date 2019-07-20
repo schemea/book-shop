@@ -1,0 +1,4 @@
+<div class="input-field">
+  <input #input type="text" (input)="onChange($event)">
+  <label (click)="input.focus()">{{label}}</label>
+</div>

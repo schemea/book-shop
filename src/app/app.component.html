@@ -1,12 +1,19 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<h1>Book Shop</h1>
+<main>
+  <h1>Book Shop</h1>
 
-<input [(ngModel)]="searchQuery" (keydown.enter)="search()"/>
 
-<div class="book-collection">
-  <ng-container *ngFor="let book of books">
-    <app-book *ngIf="book.saleability!=='NOT_FOR_SALE'" [book]="book" [thumbnailSize]="'thumbnail'"></app-book>
-  </ng-container>
+  <div class="input-field">
+    <input type="text" id="searchQuery" [(ngModel)]="searchQuery" (keydown.enter)="search()" />
+    <label for="searchQuery">Search a book</label>
+  </div>
 
-</div>
-<router-outlet></router-outlet>
+  <app-search-input label="Search a book"></app-search-input>
+
+  <div class="book-collection">
+    <ng-container *ngFor="let book of books">
+      <app-book *ngIf="book.saleability!=='NOT_FOR_SALE'" [book]="book" [thumbnailSize]="'thumbnail'"></app-book>
+    </ng-container>
+
+  </div>
+  <router-outlet></router-outlet>
+</main>

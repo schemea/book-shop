@@ -112,9 +112,10 @@ img {
     justify-content: center;
     align-items: center;
 
-    img {
-      max-height: 100%;
-      max-width: 100%;
+    app-image {
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
     }
   }
 }
@@ -129,7 +130,7 @@ img {
 
   background-color: antiquewhite;
 
-  img{
+  app-image{
     z-index: 1;
   }
 

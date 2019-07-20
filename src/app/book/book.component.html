@@ -1,7 +1,7 @@
-<div class="waves-effect waves-teal card horizontal" (click)="showDetails()">
+<div #card class="waves-effect waves-teal card horizontal loading-dom" (click)="showDetails()">
   <div class="card-image cover">
     <div>
-      <img [src]="book?.pickThumbnail(thumbnailSize) || ''" alt="thumbnail" />
+      <app-image [src]="book?.pickThumbnail(thumbnailSize) || ''" alt="thumbnail"></app-image>
       <div *ngIf="book?.saleability !== 'NOT_FOR_SALE'">
         <span [ngSwitch]="book?.saleability">
           <ng-container *ngSwitchCase="'FOR_SALE'">
@@ -39,7 +39,7 @@
       </span>
       <div class="cover">
         <div>
-          <img [src]="book?.pickThumbnail('small') || ''" alt="thumbnail" />
+          <app-image [src]="book?.pickThumbnail('small') || ''" alt="thumbnail"></app-image>
           <div *ngIf="book?.saleability !== 'NOT_FOR_SALE'">
             <span [ngSwitch]="book?.saleability">
               <ng-container *ngSwitchCase="'FOR_SALE'">

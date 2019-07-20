@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, HostBinding, ViewEncapsulation, ViewChild, AfterViewInit, ElementRef } from "@angular/core";
+import { Component, OnInit, Input, HostBinding, ViewChild, ElementRef, AfterContentInit } from "@angular/core";
 import { GoogleAPIService } from "services/google-api";
 import { Book } from "shared/book";
 
@@ -12,10 +12,11 @@ declare var M: typeof import("materialize-css");
     GoogleAPIService
   ]
 })
-export class BookComponent implements OnInit, AfterViewInit {
+export class BookComponent implements OnInit, AfterContentInit {
   @Input() book: Book;
   @Input() thumbnailSize: keyof GoogleAPI.ThumbnailMap;
   @ViewChild("details", null) details: ElementRef<HTMLDivElement>;
+  @ViewChild("card", null) card: ElementRef<HTMLDivElement>;
   modal: M.Modal;
 
   constructor(private gapi: GoogleAPIService) {
@@ -30,7 +31,11 @@ export class BookComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit() {
+  ngAfterContentInit(): void {
+    // Called after ngOnInit when the component's or directive's content has been initialized.
+    // Add 'implements AfterContentInit' to the class.
+
+    this.card.nativeElement.classList.remove("loading-dom");
     this.modal = M.Modal.init(this.details.nativeElement, {
       inDuration: 400,
       outDuration: 300

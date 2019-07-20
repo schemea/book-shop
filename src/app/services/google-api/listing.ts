@@ -1,5 +1,5 @@
 import { Book } from "shared/book";
-import { baseURL } from "./constants";
+import { bookAPI } from "./constants";
 
 
 export interface SearchResponse {
@@ -50,7 +50,7 @@ export class SearchRequest {
   }
 
   toURL() {
-    const url = new URL("volumes", baseURL);
+    const url = new URL("volumes", bookAPI);
     url.searchParams.set("q", this.query.toString());
 
     const keys: (keyof SearchRequest)[] = ["startIndex", "maxResults"];

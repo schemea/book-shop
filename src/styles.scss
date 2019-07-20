@@ -1,5 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 // @import url("https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css");
+@import 'materialize-css/sass/components/_color-variables.scss';
+$primary-color: color("deep-purple", "lighten-2");
+@debug $primary-color;
 @import 'materialize-css/sass/materialize.scss';
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
@@ -11,4 +14,8 @@ main{
   overflow: auto;
   max-height: 100vh;
   padding: 0 100px;
+}
+
+.loading-dom * {
+  transition: none !important;
 }

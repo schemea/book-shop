@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Book } from "shared/book";
 import { SearchRequest, SearchResponse, BookQuery } from "./listing";
 import { Observable } from "rxjs";
-import { baseURL } from "./constants";
+import { bookAPI, autoCompletion } from "./constants";
 import { map, finalize } from "rxjs/operators";
 
 type SearchParams = {
@@ -127,6 +127,21 @@ export class GoogleAPIService {
     };
   }
 
+  fetchAutocompletion(query: string): Observable<{[k: string]: string}> {
+    return this.request<string>(autoCompletion + query).pipe(map(script => {
+      const regex = /\[([\s,]*\[[^\[\]]+\])+\s*\]/;
+      const match = regex.exec(script);
+      if (match) {
+        const arr = (JSON.parse(match[0]) as [string, string][]).reduce((prev, curr) => {
+          return Object.assign(prev, { [curr[0]]: curr[1] });
+        }, {});
+        return arr;
+      } else {
+        throw new Error("No regex match found in script");
+      }
+    }));
+  }
+
   getVolumeByURL(url: string) {
     return this.request(url).pipe(
       map<GoogleAPI.VolumeResource, Book>(book => new Book(book))
@@ -134,7 +149,7 @@ export class GoogleAPIService {
   }
 
   getVolumeByID(id: string) {
-    return this.getVolumeByURL(baseURL + "volumes/" + id);
+    return this.getVolumeByURL(bookAPI + "volumes/" + id);
   }
 
   retrieveHighResThumbnails(book: Book) {

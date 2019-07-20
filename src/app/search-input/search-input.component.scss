@@ -1,0 +1,10 @@
+:host{
+  position: relative;
+
+  .autocomplete{
+    position: absolute;
+    bottom: 0;
+    transform: translateY(100%);
+    background-color: white;
+  }
+}
