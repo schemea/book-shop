@@ -5,10 +5,10 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch Angular",
+      "name": "Debug Angular",
       "type": "chrome",
       "request": "launch",
-      "preLaunchTask": "npm: start",
+      "preLaunchTask": "Launch Server",
       "url": "http://localhost:4200/",
       "webRoot": "${workspaceFolder}"
     }

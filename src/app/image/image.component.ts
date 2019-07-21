@@ -10,7 +10,7 @@ import { HttpClient } from "@angular/common/http";
 export class ImageComponent implements OnInit, OnChanges {
   @Input() src: string;
   @Input() alt: string;
-  currentImage: string;
+  currentImage: HTMLImageElement;
 
   constructor(private ref: ElementRef<HTMLElement>, private http: HttpClient) { }
 
@@ -22,7 +22,15 @@ export class ImageComponent implements OnInit, OnChanges {
     // Add '${implements OnChanges}' to the class.
 
     if (changes.src) {
-      this.currentImage = changes.src.currentValue;
+      // this.currentImage = changes.src.currentValue;
+      const img = this.ref.nativeElement.appendChild(document.createElement("img"));
+      img.src = changes.src.currentValue;
+      img.alt = this.alt;
+      img.onload = () => {
+        this.currentImage = img;
+        console.log(img.src);
+
+      };
     }
   }
 

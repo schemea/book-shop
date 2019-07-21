@@ -1,0 +1,85 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Watch",
+      "type": "shell",
+      "command": "ng build --watch --tsConfig=tsconfig.app.json",
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "____________________"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "_______________",
+          "endsPattern": "^.*Date.*"
+        }
+      },
+      "isBackground": true,
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "group": "build"
+    },
+    {
+      "label": "Build",
+      "type": "shell",
+      "command": "ng build --prod --tsConfig=tsconfig.app.json",
+      "problemMatcher": "$tsc",
+      "isBackground": false,
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Launch Server",
+      "type": "shell",
+      "command": "npx ts-node server.ts",
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "___________________"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "______________",
+          "endsPattern": "^\\s*Server is listening.*"
+        }
+      },
+      "isBackground": true,
+      "options": {
+        "env": {
+          "port": "4200",
+          "NODE_ENV": "development"
+        }
+      }
+    },
+
+    {
+      "label": "e2e",
+      "type": "shell",
+      "command": "ng e2e --dev-server-target=",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "options": {
+        "env": {
+          "port": "4200",
+          "NODE_ENV": "production"
+        }
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": true,
+        "clear": true
+      },
+      "promptOnClose": true
+    }
+  ]
+}

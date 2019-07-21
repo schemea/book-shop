@@ -34,16 +34,24 @@ export class SearchInputComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-    this.subscription = this.gapi.fetchAutocompletion(this.input.nativeElement.value).subscribe(data => {
-      const map = data.reduce((prev, curr) => {
-        const k = this.sanitizer.sanitize(SecurityContext.HTML, curr[0]);
-        const v = this.sanitizer.sanitize(SecurityContext.HTML, curr[1]);
-        return Object.assign(prev, { [k]: v });
-      }, {});
-      this.instance.updateData(map);
-      (this.instance as any).open();
-      this.subscription.unsubscribe();
-      this.subscription = null;
+    this.subscription = this.gapi.fetchAutocompletion(this.input.nativeElement.value).subscribe({
+      next: (data) => {
+        const map = data.reduce((prev, curr) => {
+          const k = this.sanitizer.sanitize(SecurityContext.HTML, curr[0]);
+          const v = this.sanitizer.sanitize(SecurityContext.HTML, curr[1]);
+          return Object.assign(prev, { [k]: v });
+        }, {});
+        this.instance.updateData(map);
+        (this.instance as any).open();
+        this.subscription.unsubscribe();
+        this.subscription = null;
+      },
+      error: (e) => {
+        console.error(e);
+      },
+      complete: () => {
+        this.subscription = null;
+      }
     });
   }
 

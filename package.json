@@ -4,11 +4,11 @@
   "scripts": {
     "ng": "ng",
     "debug": "ng serve",
-    "build": "ng build",
+    "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "start": "ng build --prod=true & npx ts-node server.ts"
+    "start": "npx ts-node server.ts"
   },
   "private": true,
   "dependencies": {
@@ -23,6 +23,7 @@
     "@types/materialize-css": "^1.0.6",
     "@types/request-promise": "^4.1.44",
     "express": "^4.17.1",
+    "livereload": "^0.8.0",
     "materialize-css": "^1.0.0",
     "node-waves": "^0.7.6",
     "request-promise": "^4.2.4",
@@ -41,6 +42,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
     "codelyzer": "^5.0.0",
+    "connect-livereload": "^0.6.1",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.1.0",

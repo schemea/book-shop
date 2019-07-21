@@ -31,12 +31,12 @@
 </div>
 
 <div #details class="modal">
+  <div class="title">{{book?.title}}</div>
   <div class="modal-content">
-    <div class="title">{{book?.title}}</div>
+    <span *ngIf="book?.authors" class="authors">
+      by {{book?.authors?.join(", ")}}
+    </span>
     <div class="info">
-      <span *ngIf="book?.authors" class="authors">
-        by {{book?.authors?.join(", ")}}
-      </span>
       <div class="cover">
         <div>
           <app-image [src]="book?.pickThumbnail('small') || ''" alt="thumbnail"></app-image>
@@ -53,7 +53,7 @@
         </div>
       </div>
       <div class="details">
-        ISBN {{book.identifiers.get("ISBN_13")}}
+        ISBN {{book.identifiers.get("ISBN_13")}}<br>
         Genre: {{book.genre}}
       </div>
     </div>

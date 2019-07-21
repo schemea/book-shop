@@ -9,7 +9,7 @@ $shadow-color: rgba(0, 0, 0, 0.8);
   border: $border;
   @include z-depth-3;
 
-  &:hover{
+  &:hover {
     filter: brightness(1.1);
     @include z-depth-4;
   }
@@ -93,29 +93,41 @@ img {
   align-items: flex-end;
 }
 
-.modal .info {
-  position: relative;
-  display: flex;
-  flex-direction: row;
 
-  padding-top: 1.5em;
-
-  .details {
-    padding: 5px 5px 10px;
+.modal {
+  .title{
+    font-size: 1.25em;
+    padding: 0.5em;
   }
 
-  .cover {
-    height: 300px;
-    width: 200px;
+  .modal-content {
+    position: relative;
+    padding-top: calc(24px + 1em);
+  }
 
+  .info{
+    position: relative;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: row;
+    // padding-top: 1.5em;
 
-    app-image {
-      height: 100%;
-      width: 100%;
-      object-fit: contain;
+    .details {
+      padding: 5px 5px 10px;
+    }
+
+    .cover {
+      height: 300px;
+      width: 200px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      app-image {
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
+      }
     }
   }
 }
