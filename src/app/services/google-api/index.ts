@@ -4,7 +4,7 @@ import { Book } from "shared/book";
 import { SearchRequest, SearchResponse, BookQuery } from "./listing";
 import { Observable } from "rxjs";
 import { bookAPI, autoCompletion } from "./constants";
-import { map, finalize } from "rxjs/operators";
+import { map, finalize, take } from "rxjs/operators";
 
 type SearchParams = {
   [k in keyof SearchRequest]?: SearchRequest[k]
@@ -137,7 +137,7 @@ export class GoogleAPIService {
     };
   }
 
-  fetchAutocompletion(query: string): Observable<{ [k: string]: string }> {
+  fetchAutocompletion(query: string): Observable<[string, string][]> {
     return this.request<string>(
       "/proxy/" + autoCompletion + query,
       {
@@ -149,10 +149,7 @@ export class GoogleAPIService {
         const match = regex.exec(script);
         if (match) {
           const arr = JSON.parse(match[0]);
-          const ret = arr.reduce((prev, curr) => {
-            return Object.assign(prev, { [curr[0]]: curr[1] });
-          }, {});
-          return ret;
+          return arr;
         }
         return {};
       }));
@@ -160,6 +157,7 @@ export class GoogleAPIService {
 
   getVolumeByURL(url: string) {
     return this.request(url).pipe(
+      take(1),
       map<GoogleAPI.VolumeResource, Book>(book => new Book(book))
     );
   }

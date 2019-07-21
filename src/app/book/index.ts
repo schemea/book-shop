@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, HostBinding, ViewChild, ElementRef, AfterContentInit } from "@angular/core";
+import { Component, OnInit, Input, ViewChild, ElementRef, AfterContentInit, SecurityContext } from "@angular/core";
 import { GoogleAPIService } from "services/google-api";
 import { Book } from "shared/book";
-
-declare var M: typeof import("materialize-css");
+import M from "materialize-css";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: "app-book",
@@ -19,7 +19,7 @@ export class BookComponent implements OnInit, AfterContentInit {
   @ViewChild("card", null) card: ElementRef<HTMLDivElement>;
   modal: M.Modal;
 
-  constructor(private gapi: GoogleAPIService) {
+  constructor(private ref: ElementRef<HTMLElement>, private gapi: GoogleAPIService, private sanitizer: DomSanitizer) {
     if (!this.thumbnailSize) {
       this.thumbnailSize = "small";
     }
@@ -35,10 +35,21 @@ export class BookComponent implements OnInit, AfterContentInit {
     // Called after ngOnInit when the component's or directive's content has been initialized.
     // Add 'implements AfterContentInit' to the class.
 
-    this.card.nativeElement.classList.remove("loading-dom");
+    let modals: NodeListOf<HTMLElement>;
+
     this.modal = M.Modal.init(this.details.nativeElement, {
       inDuration: 400,
-      outDuration: 300
+      outDuration: 300,
+      preventScrolling: false,
+      onCloseStart: () => {
+        (modals || (modals = this.ref.nativeElement.querySelectorAll<HTMLElement>(".modal, .modal-overlay")))
+          .forEach(el => el.style.pointerEvents = "none");
+      },
+      onOpenStart: () => {
+        if (modals) {
+          modals.forEach(el => el.style.pointerEvents = "unset");
+        }
+      }
     });
   }
 
@@ -57,7 +68,7 @@ export class BookComponent implements OnInit, AfterContentInit {
   getDescription() {
     if (this.book.textSnippet) {
       const desc = this.book.textSnippet.replace(/<br\s*\/?>/gi, "");
-      return desc;
+      return this.sanitizer.sanitize(SecurityContext.HTML, desc);
     } else {
       return this.book.description;
     }

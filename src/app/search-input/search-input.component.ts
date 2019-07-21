@@ -1,7 +1,8 @@
-import { Component, OnInit, ElementRef, Input, ViewChild, Output, EventEmitter, OnDestroy } from "@angular/core";
+import { Component, OnInit, ElementRef, Input, ViewChild, Output, EventEmitter, OnDestroy, SecurityContext } from "@angular/core";
 import { GoogleAPIService } from "app/services/google-api";
 import { Subscription } from "rxjs";
-
+import M from "materialize-css";
+import { DomSanitizer } from "@angular/platform-browser";
 
 class SearchEvent extends Event {
   constructor(public keywords: string) {
@@ -21,7 +22,7 @@ export class SearchInputComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   instance: M.Autocomplete;
 
-  constructor(private gapi: GoogleAPIService) { }
+  constructor(private gapi: GoogleAPIService, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.instance = M.Autocomplete.init(this.input.nativeElement, {
@@ -34,7 +35,12 @@ export class SearchInputComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
     this.subscription = this.gapi.fetchAutocompletion(this.input.nativeElement.value).subscribe(data => {
-      this.instance.updateData(data);
+      const map = data.reduce((prev, curr) => {
+        const k = this.sanitizer.sanitize(SecurityContext.HTML, curr[0]);
+        const v = this.sanitizer.sanitize(SecurityContext.HTML, curr[1]);
+        return Object.assign(prev, { [k]: v });
+      }, {});
+      this.instance.updateData(map);
       (this.instance as any).open();
       this.subscription.unsubscribe();
       this.subscription = null;

@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, ElementRef, OnChanges, SimpleChanges } from "@angular/core";
+import { Component, OnInit, Input, ElementRef, OnChanges, SimpleChanges, ViewEncapsulation } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 
 @Component({
   selector: "app-image",
   templateUrl: "./image.component.html",
-  styleUrls: ["./image.component.scss"]
+  styleUrls: ["./image.component.scss"],
+  encapsulation: ViewEncapsulation.ShadowDom
 })
 export class ImageComponent implements OnInit, OnChanges {
   @Input() src: string;

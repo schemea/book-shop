@@ -37,6 +37,6 @@ app.use("/", (req, res, next) => {
 });
 
 
-const listener = app.listen(process.env.PORT || 80, () => {
+const listener = app.listen(process.env.PORT || 4200, () => {
   console.log("Server is listening on port:", listener.address().port);
 });
