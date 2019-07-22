@@ -3,14 +3,32 @@
 $border: 1px solid #ccc;
 $shadow-color: rgba(0, 0, 0, 0.8);
 
+@keyframes card-spawn{
+  0%{
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  50%{
+    transform: scale(1);
+  }
+  100%{
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .card {
   height: 230px;
   background-color: aquamarine;
   border: $border;
+
+  // animation: card-spawn 1s ease-out;
+  // animation-fill-mode: both;
+
   @include z-depth-3;
 
   &:hover {
-    filter: brightness(1.1);
+    filter: brightness(1.05);
     @include z-depth-4;
   }
 
@@ -123,11 +141,6 @@ img {
       justify-content: center;
       align-items: center;
 
-      app-image {
-        height: 100%;
-        width: 100%;
-        object-fit: contain;
-      }
     }
   }
 }
@@ -141,6 +154,14 @@ img {
   padding: 10px;
 
   background-color: antiquewhite;
+  height: 100%;
+  width: 100%;
+
+  app-image {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+  }
 
   &>div {
     position: relative;

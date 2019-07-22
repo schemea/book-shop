@@ -1,0 +1,29 @@
+:host {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+
+  transition: background-color 0.2s ease-out;
+
+  &:not(.no-background) {
+    background-color: rgba(0, 0, 0, 0.35);
+  }
+
+  .spinner-white-only {
+    border-color: white;
+  }
+
+  pointer-events: none;
+
+  &>* {
+    min-width: 64px;
+    min-height: 64px;
+  }
+}

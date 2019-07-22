@@ -42,7 +42,9 @@ describe("workspace-project App", () => {
 
     const books = page.getBooks();
     it("should display a modal", () => {
+      browser.sleep(1000);
       books.first().click();
+      browser.waitForAngular();
       expect(browser.findElement(by.css(".modal.open")).isDisplayed()).toBeTruthy();
     });
     it("modal should be closed", () => {

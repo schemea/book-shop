@@ -2,7 +2,8 @@ import { Component, OnInit, Input, ViewChild, ElementRef, AfterContentInit, Secu
 import { GoogleAPIService } from "services/google-api";
 import { Book } from "shared/book";
 import M from "materialize-css";
-import { DomSanitizer } from "@angular/platform-browser";
+import { ImageComponent } from "app/image/image.component";
+import { fade } from "shared/animations";
 
 @Component({
   selector: "app-book",
@@ -10,6 +11,9 @@ import { DomSanitizer } from "@angular/platform-browser";
   styleUrls: ["./book.component.scss"],
   providers: [
     GoogleAPIService
+  ],
+  animations: [
+    fade
   ]
 })
 export class BookComponent implements OnInit, AfterContentInit {
@@ -17,11 +21,15 @@ export class BookComponent implements OnInit, AfterContentInit {
   @Input() thumbnailSize: keyof GoogleAPI.ThumbnailMap;
   @ViewChild("details", null) details: ElementRef<HTMLDivElement>;
   @ViewChild("card", null) card: ElementRef<HTMLDivElement>;
+  @ViewChild("detailsImage", {
+    read: ImageComponent,
+    static: false
+  }) detailsImage: ImageComponent;
   modal: M.Modal;
 
-  constructor(private ref: ElementRef<HTMLElement>, private gapi: GoogleAPIService, private sanitizer: DomSanitizer) {
+  constructor(private ref: ElementRef<HTMLElement>, private gapi: GoogleAPIService) {
     if (!this.thumbnailSize) {
-      this.thumbnailSize = "small";
+      this.thumbnailSize = "thumbnail";
     }
   }
 
@@ -68,14 +76,16 @@ export class BookComponent implements OnInit, AfterContentInit {
   getDescription() {
     if (this.book.textSnippet) {
       const desc = this.book.textSnippet.replace(/<br\s*\/?>/gi, "");
-      return this.sanitizer.sanitize(SecurityContext.HTML, desc);
+      return desc;
     } else {
       return this.book.description;
     }
   }
 
   showDetails() {
-    this.gapi.retrieveHighResThumbnails(this.book);
+    if (this.gapi.retrieveHighResThumbnails(this.book)) {
+      this.detailsImage.loading = true;
+    }
     this.modal.open();
   }
 }

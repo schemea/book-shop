@@ -1,8 +1,8 @@
-<div #card class="waves-effect waves-teal card horizontal" (click)="showDetails()">
+<div #card @fade class="waves-effect waves-teal card horizontal" (click)="showDetails()">
   <div class="card-image cover">
     <div>
-      <app-image [src]="book?.pickThumbnail(thumbnailSize) || ''" alt="thumbnail"></app-image>
-      <div *ngIf="book?.saleability !== 'NOT_FOR_SALE'">
+      <app-image #cardCover [src]="book?.pickThumbnail(thumbnailSize) || ''" alt="thumbnail"></app-image>
+      <div *ngIf="cardCover.available && book?.saleability !== 'NOT_FOR_SALE'">
         <span [ngSwitch]="book?.saleability">
           <ng-container *ngSwitchCase="'FOR_SALE'">
             {{ book.price.amount }}{{ book.price.currencyCode === "EUR" ? "€" : "$" }}
@@ -39,8 +39,8 @@
     <div class="info">
       <div class="cover">
         <div>
-          <app-image [src]="book?.pickThumbnail('small') || ''" alt="thumbnail"></app-image>
-          <div *ngIf="book?.saleability !== 'NOT_FOR_SALE'">
+          <app-image #detailsImage [src]="book?.pickThumbnail('small') || ''" alt="thumbnail"></app-image>
+          <div *ngIf="detailsImage.available && book?.saleability !== 'NOT_FOR_SALE'">
             <span [ngSwitch]="book?.saleability">
               <ng-container *ngSwitchCase="'FOR_SALE'">
                 {{ book.price.amount }}{{ book.price.currencyCode === "EUR" ? "€" : "$" }}

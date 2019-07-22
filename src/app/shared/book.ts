@@ -38,7 +38,8 @@ export class Book implements Book {
       price: volume.saleInfo.retailPrice,
       saleability: volume.saleInfo.saleability,
       textSnippet: volume.searchInfo && volume.searchInfo.textSnippet,
-      genre: volumeInfo.categories
+      genre: volumeInfo.categories,
+      publisher: volumeInfo.publisher
     } as Book);
     if (volumeInfo.industryIdentifiers) {
       for (const id of volumeInfo.industryIdentifiers) {

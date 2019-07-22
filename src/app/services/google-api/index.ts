@@ -151,7 +151,7 @@ export class GoogleAPIService {
           const arr = JSON.parse(match[0]);
           return arr;
         }
-        return {};
+        return [];
       }));
   }
 
@@ -168,7 +168,7 @@ export class GoogleAPIService {
 
   retrieveHighResThumbnails(book: Book) {
     if (Object.keys(book.imageLinks).length > 2) {
-      return;
+      return null;
     }
     return this.getVolumeByURL(book.selfLink).subscribe(newBook => {
       book.imageLinks = newBook.imageLinks;

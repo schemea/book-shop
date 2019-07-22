@@ -1,23 +1,16 @@
 import Express from "express";
 import Path from "path";
-import requestPromise = require("request-promise");
+import Request from "request";
+import Morgan from "morgan";
 
 const app = Express();
 const port = process.env.PORT || 80;
 
+app.use(Morgan("dev"));
 app.use("/proxy", async (req, res, next) => {
   try {
     const query = Object.entries(req.query).map(([k, v]: [string, string]) => k + "=" + encodeURIComponent(v)).join("&");
 
-    // const url = new URL(req.path.substr(1), "https://");
-    // for (const k in req.query) {
-    //   if (req.query.hasOwnProperty(k)) {
-    //     url.searchParams.set(k, req.query[k]);
-    //   }
-    // }
-    // if (!url.protocol) {
-    //   url.protocol = "https:";
-    // }
     let url = req.path.substr(1);
     if (!url.startsWith("http")) {
       url = "https://" + url;
@@ -25,8 +18,8 @@ app.use("/proxy", async (req, res, next) => {
     if (query) {
       url += "?" + query;
     }
-    const data = await requestPromise(url);
-    res.end(data);
+    const stream = Request(url);
+    stream.pipe(res);
   } catch (e) {
     console.log(e);
     res.status(500);
@@ -43,9 +36,7 @@ console.log(process.env.NODE_ENV);
 
 if (process.env.NODE_ENV === "development") {
   const base = Path.join(__dirname, "dist/book-shop");
-  const liveServer = require("livereload").createServer({
-    debug: true
-  });
+  const liveServer = require("livereload").createServer();
   app.use("/", (req, res, next) => {
     const fs: typeof import("fs") = require("fs");
     const html = fs.readFileSync(Path.join(base, "index.html"));

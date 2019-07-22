@@ -1,5 +1,38 @@
-img{
-  height: 100%;
-  width: 100%;
-  object-fit: inherit;
+@import "materialize-css/sass/materialize.scss";
+
+@keyframes fade-in{
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
 }
+
+app-image{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img.old {
+    position: absolute !important;
+    transform: translate(-50%, -50%) !important;
+    left: 50% !important;
+    top: 50% !important;
+    z-index: 1;
+  }
+
+  img.first{
+    animation: fade-in 0.3s ease-out;
+    animation-fill-mode: both;
+  }
+
+  img.current{
+    height: 100%;
+    width: 100%;
+    object-fit: inherit;
+    z-index: 0 !important;
+  }
+}
+

@@ -9,11 +9,8 @@
 
   <app-search-input label="Search a book" (search)="search($event.keywords)"></app-search-input>
 
-  <div class="book-collection">
-    <ng-container *ngFor="let book of books">
-      <app-book *ngIf="book.saleability!=='NOT_FOR_SALE'" [book]="book" [thumbnailSize]="'thumbnail'"></app-book>
-    </ng-container>
-
-  </div>
+  <app-book-collection #bookCollection [books]="books"></app-book-collection>
   <router-outlet></router-outlet>
+
+  <app-loading-overlay @fadeNoTransform *ngIf="loading"></app-loading-overlay>
 </main>
