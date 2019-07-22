@@ -2,6 +2,8 @@ import { Component, AfterViewInit, HostBinding, OnInit, ElementRef, AfterContent
 import { GoogleAPIService } from "services/google-api";
 import { Book } from "shared/book";
 import { child, fadeNoTransform } from "shared/animations";
+import { delay, mergeMap, concatMap } from "rxjs/operators";
+import { of } from "rxjs";
 
 @Component({
   selector: "app-root",
@@ -25,10 +27,18 @@ export class AppComponent {
 
   search(keywords: string) {
     this.loading = true;
-    this.gapi.searchBooks(keywords, { maxResults: 100 }).then(resp => {
-      this.loading = false;
-      const data = resp.items.filter(book => book.saleability !== "NOT_FOR_SALE");
-      this.books = data;
+    const books = this.books = [];
+    const app = this;
+    this.gapi.searchBooks(keywords, {
+      maxResults: 100,
+      filter: (volume) => volume.saleInfo.saleability !== "NOT_FOR_SALE"
+    }).pipe(
+      concatMap(book => of(book).pipe(delay(150)))
+    ).subscribe({
+      next(book) { books.push(book); },
+      complete() {
+        app.loading = false;
+      }
     });
   }
 
