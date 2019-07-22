@@ -20,3 +20,6 @@ interface Discount {
 }
 
 type ISBNType = "ISBN_10" | "ISBN_13";
+
+declare const TweenLite: typeof import("gsap").TweenLite;
+declare const Power2: typeof import("gsap").Power2;

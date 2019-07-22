@@ -26,9 +26,13 @@ app.use("/proxy", async (req, res, next) => {
     res.end(e.toString());
   }
 });
+app.get("/stats.json", (req, res, next) => {
+  res.status(403);
+  res.end();
+});
 app.get("/index.html", (req, res, next) => {
   req.url = "/";
-  console.log("redirecting",  req.url, "to /");
+  console.log("redirecting", req.url, "to /");
   next();
 });
 app.use(Express.static(Path.join(__dirname, "dist/book-shop"), { index: false }));

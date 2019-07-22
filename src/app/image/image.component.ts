@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, OnChanges, SimpleChanges, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, Input, ElementRef, OnChanges, SimpleChanges, ViewEncapsulation } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { TweenLite, Power2 } from "gsap";
+// import { TweenLite, Power2 } from "gsap";
 import { fadeNoTransform } from "shared/animations";
 
 @Component({

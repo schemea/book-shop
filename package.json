@@ -4,12 +4,13 @@
   "scripts": {
     "ng": "ng",
     "debug": "ng serve",
-    "build": "ng build --prod",
+    "build": "ng build --prod --stats-json",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "start": "npx ts-node server.ts",
-    "watch": "ng build --watch"
+    "watch": "ng build --watch",
+    "bundle-analyzer": "npx webpack-bundle-analyzer dist/book-shop/stats.json"
   },
   "private": true,
   "dependencies": {
@@ -58,6 +59,7 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
-    "typescript": "~3.4.3"
+    "typescript": "~3.4.3",
+    "webpack-bundle-analyzer": "^3.3.2"
   }
 }
