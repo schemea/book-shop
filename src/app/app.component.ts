@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, HostBinding, OnInit, ElementRef, AfterContentInit, ViewChild } from "@angular/core";
+import { Component, AfterViewInit, HostBinding, OnInit, ElementRef, AfterContentInit, ViewChild, OnDestroy } from "@angular/core";
 import { GoogleAPIService } from "services/google-api";
 import { Book } from "shared/book";
 import { child, fadeNoTransform } from "shared/animations";
@@ -18,7 +18,7 @@ import { SearchObservable } from "./services/google-api/search";
     fadeNoTransform
   ]
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
   title = "book-shop";
   books: Book[];
   searchQuery: string;
@@ -31,14 +31,25 @@ export class AppComponent {
 
   constructor(private gapi: GoogleAPIService) { }
 
-  search(keywords: string) {
-    this.loading = true;
-    const books = this.books = [];
-    const app = this;
+  abortSearch() {
     if (this.searchContext) {
       this.searchContext.observable.abort();
       this.searchContext.subscribtion.unsubscribe();
     }
+  }
+
+  ngOnDestroy(): void {
+    // Called once, before the instance is destroyed.
+    // Add 'implements OnDestroy' to the class.
+
+    this.abortSearch();
+  }
+
+  search(keywords: string) {
+    this.loading = true;
+    const books = this.books = [];
+    const app = this;
+    this.abortSearch();
     this.searchContext = {} as any;
     this.searchContext.observable = this.gapi.searchBooks(keywords, {
       maxResults: 100,
