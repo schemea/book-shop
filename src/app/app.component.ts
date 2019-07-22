@@ -21,12 +21,12 @@ import { SearchObservable } from "./services/google-api/search";
 export class AppComponent implements OnDestroy {
   title = "book-shop";
   books: Book[];
-  searchQuery: string;
   loading: boolean;
 
   searchContext: {
     observable: SearchObservable,
-    subscribtion: Subscription
+    subscribtion: Subscription,
+    query: string
   };
 
   constructor(private gapi: GoogleAPIService) { }
@@ -46,11 +46,14 @@ export class AppComponent implements OnDestroy {
   }
 
   search(keywords: string) {
+    if (this.searchContext && this.searchContext.query === keywords) {
+      return;
+    }
     this.loading = true;
     const books = this.books = [];
     const app = this;
     this.abortSearch();
-    this.searchContext = {} as any;
+    this.searchContext = { query: keywords } as AppComponent["searchContext"];
     this.searchContext.observable = this.gapi.searchBooks(keywords, {
       maxResults: 100,
       filter: (volume) => volume.saleInfo.saleability !== "NOT_FOR_SALE"
