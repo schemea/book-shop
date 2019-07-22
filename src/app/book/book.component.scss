@@ -27,9 +27,10 @@ $shadow-color: rgba(0, 0, 0, 0.8);
 
   @include z-depth-3;
 
-  &:hover {
+  &:hover, &:focus {
     filter: brightness(1.05);
     @include z-depth-4;
+    outline: none;
   }
 
   .card-image {

@@ -1,4 +1,4 @@
-<div #card @fade class="waves-effect waves-teal card horizontal" (click)="showDetails()">
+<div #card @fade class="waves-effect waves-teal card horizontal" (click)="showDetails()" (keydown.enter)="showDetails()" tabindex="0">
   <div class="card-image cover">
     <div>
       <app-image #cardCover [src]="book?.pickThumbnail(thumbnailSize) || ''" alt="thumbnail"></app-image>
