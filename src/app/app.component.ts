@@ -2,8 +2,9 @@ import { Component, AfterViewInit, HostBinding, OnInit, ElementRef, AfterContent
 import { GoogleAPIService } from "services/google-api";
 import { Book } from "shared/book";
 import { child, fadeNoTransform } from "shared/animations";
-import { delay, mergeMap, concatMap } from "rxjs/operators";
-import { of } from "rxjs";
+import { delay, mergeMap, concatMap, subscribeOn } from "rxjs/operators";
+import { of, Subscription } from "rxjs";
+import { SearchObservable } from "./services/google-api/search";
 
 @Component({
   selector: "app-root",
@@ -23,20 +24,31 @@ export class AppComponent {
   searchQuery: string;
   loading: boolean;
 
+  searchContext: {
+    observable: SearchObservable,
+    subscribtion: Subscription
+  };
+
   constructor(private gapi: GoogleAPIService) { }
 
   search(keywords: string) {
     this.loading = true;
     const books = this.books = [];
     const app = this;
-    this.gapi.searchBooks(keywords, {
+    if (this.searchContext) {
+      this.searchContext.observable.abort();
+      this.searchContext.subscribtion.unsubscribe();
+    }
+    this.searchContext = {} as any;
+    this.searchContext.observable = this.gapi.searchBooks(keywords, {
       maxResults: 100,
       filter: (volume) => volume.saleInfo.saleability !== "NOT_FOR_SALE"
-    }).pipe(
+    });
+    this.searchContext.subscribtion = this.searchContext.observable.pipe(
       concatMap(book => of(book).pipe(delay(150)))
     ).subscribe({
-      next(book) { books.push(book); },
-      complete() {
+      next(book) {
+        books.push(book);
         app.loading = false;
       }
     });
