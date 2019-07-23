@@ -1,3 +1,4 @@
+import { ThumbnailMap } from "./thumbnails";
 
 export class Book implements Book {
   title: string;
@@ -14,7 +15,7 @@ export class Book implements Book {
   textSnippet?: string;
   genre: string[];
 
-  imageLinks: GoogleAPI.ThumbnailMap;
+  thumbnails: ThumbnailMap;
 
   language: "fr" | "en";
 
@@ -31,7 +32,7 @@ export class Book implements Book {
       authors: volumeInfo.authors,
       title: volumeInfo.title,
       description: volumeInfo.description,
-      imageLinks: volumeInfo.imageLinks,
+      thumbnails: new ThumbnailMap(volumeInfo.imageLinks),
       rating: volumeInfo.averageRating,
       pageCount: volumeInfo.pageCount,
       language: volumeInfo.language,
@@ -48,23 +49,23 @@ export class Book implements Book {
     }
   }
 
-  pickThumbnail(size: keyof Book["imageLinks"] = "extraLarge") {
-    if (!this.imageLinks) {
-      return "";
-    }
+  // pickThumbnail(size: keyof Book["thumbnails"] = "extraLarge") {
+  //   if (!this.thumbnails) {
+  //     return "";
+  //   }
 
-    const sizes: typeof size[] = ["extraLarge", "large", "medium", "small", "thumbnail", "smallThumbnail"];
-    let sizeFound = false;
-    for (const key of sizes) {
-      if (key === size || sizeFound) {
-        const value = this.imageLinks[key];
-        if (value) {
-          return value;
-        }
-        sizeFound = true;
-      }
-    }
+  //   const sizes: typeof size[] = ["extraLarge", "large", "medium", "small", "thumbnail", "smallThumbnail"];
+  //   let sizeFound = false;
+  //   for (const key of sizes) {
+  //     if (key === size || sizeFound) {
+  //       const value = this.imageLinks[key];
+  //       if (value) {
+  //         return value;
+  //       }
+  //       sizeFound = true;
+  //     }
+  //   }
 
-    return "";
-  }
+  //   return "";
+  // }
 }

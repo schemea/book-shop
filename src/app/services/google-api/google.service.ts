@@ -6,6 +6,7 @@ import { Observable } from "rxjs";
 import { bookAPI, autoCompletion } from "./constants";
 import { map, take } from "rxjs/operators";
 import { SearchObservable } from "./search";
+import { ThumbnailMap } from "shared/thumbnails";
 
 type SearchParams = {
   [k in keyof SearchRequest]?: SearchRequest[k]
@@ -100,11 +101,11 @@ export class GoogleAPIService {
   }
 
   retrieveHighResThumbnails(book: Book) {
-    if (Object.keys(book.imageLinks).length > 2) {
+    if (book.thumbnails.get(ThumbnailMap.Sizes.small, "bigger")) {
       return null;
     }
     return this.getVolumeByURL(book.selfLink).subscribe(newBook => {
-      book.imageLinks = newBook.imageLinks;
+      book.thumbnails = newBook.thumbnails;
     });
   }
 }

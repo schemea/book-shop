@@ -1,0 +1,32 @@
+@import "../style.scss";
+
+.title {
+  font-size: 1.25em;
+  padding: 0.5em;
+}
+
+.modal-content {
+  position: relative;
+  padding-top: calc(24px + 1em);
+}
+
+.info {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  // padding-top: 1.5em;
+
+  .details {
+    padding: 5px 5px 10px;
+  }
+
+  .cover {
+    height: 300px;
+    width: 200px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  }
+}

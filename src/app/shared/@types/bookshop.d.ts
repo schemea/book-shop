@@ -19,3 +19,4 @@ declare const TweenLite: typeof import("gsap").TweenLite;
 declare const Power2: typeof import("gsap").Power2;
 
 type Price = GoogleAPI.Price;
+// type ThumbnailMap = GoogleAPI.ThumbnailMap;
