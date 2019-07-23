@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { LoadingOverlayComponent } from "./loading-overlay/loading-overlay.component";
 import { BookCollectionComponent } from "./book/collection/book-collection.component";
 import { BookDetailsComponent } from "./book/details/book-details.component";
+import { SearchComponent } from "./routing/search/search.component";
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { BookDetailsComponent } from "./book/details/book-details.component";
     SearchInputComponent,
     LoadingOverlayComponent,
     BookCollectionComponent,
-    BookDetailsComponent
+    BookDetailsComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,

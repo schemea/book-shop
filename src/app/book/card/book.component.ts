@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild, ElementRef, AfterContentInit, Secu
 import { GoogleAPIService } from "services/google-api";
 import { Book } from "shared/book";
 import M from "materialize-css";
-import { fade } from "shared/animations";
+import { fadeScale } from "shared/animations";
 import { BookDetailsComponent } from "app/book/details";
 
 @Component({
@@ -13,7 +13,7 @@ import { BookDetailsComponent } from "app/book/details";
     GoogleAPIService
   ],
   animations: [
-    fade
+    fadeScale
   ]
 })
 export class BookComponent implements OnInit, AfterContentInit {

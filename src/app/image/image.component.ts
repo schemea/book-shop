@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ElementRef, OnChanges, SimpleChanges, ViewEncapsulation } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 // import { TweenLite, Power2 } from "gsap";
-import { fadeNoTransform } from "shared/animations";
+import { fade } from "shared/animations";
 
 @Component({
   selector: "app-image",
@@ -9,7 +9,7 @@ import { fadeNoTransform } from "shared/animations";
   styleUrls: ["./image.component.scss"],
   encapsulation: ViewEncapsulation.None,
   animations: [
-    fadeNoTransform
+    fade
   ]
 })
 export class ImageComponent implements OnInit, OnChanges {

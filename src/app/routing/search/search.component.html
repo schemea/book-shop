@@ -1,0 +1,6 @@
+
+  <app-search-input label="Search a book" (search)="search($event.keywords)"></app-search-input>
+
+  <app-book-collection #bookCollection [books]="books"></app-book-collection>
+
+  <app-loading-overlay @fade *ngIf="loading"></app-loading-overlay>
