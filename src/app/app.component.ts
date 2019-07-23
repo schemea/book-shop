@@ -50,7 +50,7 @@ export class AppComponent implements OnDestroy {
       return;
     }
     this.loading = true;
-    const books = this.books = [];
+    let books: Book[];
     const app = this;
     this.abortSearch();
     this.searchContext = { query: keywords } as AppComponent["searchContext"];
@@ -59,9 +59,12 @@ export class AppComponent implements OnDestroy {
       filter: (volume) => volume.saleInfo.saleability !== "NOT_FOR_SALE"
     });
     this.searchContext.subscribtion = this.searchContext.observable.pipe(
-      concatMap(book => of(book).pipe(delay(150)))
+      concatMap(book => of(book).pipe(delay(200)))
     ).subscribe({
       next(book) {
+        if (!books) {
+          books = app.books = [];
+        }
         books.push(book);
         app.loading = false;
       }

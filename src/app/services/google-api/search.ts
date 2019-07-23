@@ -2,7 +2,7 @@ import { Observable, Subscriber, Subscription } from "rxjs";
 import { Book } from "shared/book";
 import { SearchRequest, SearchResponse } from "./listing";
 import { toArray, map } from "rxjs/operators";
-type GoogleAPIService = import(".").GoogleAPIService;
+type GoogleAPIService = import("./google.service").GoogleAPIService;
 
 export enum State {
   unintialized,
@@ -22,12 +22,13 @@ export class SearchObservable extends Observable<Book> {
     emittedCount: 0,
     totalItems: null as number
   };
-  public get totalItems() { return this.data.totalItems; }
-  public get request() { return this.data.request; }
-  public get aborted() { return this.state === State.unintialized; }
-  public get paused() { return this.state === State.paused; }
-  public get running() { return this.state === State.running; }
-  public get done() { return this.state === State.done; }
+  get totalItems() { return this.data.totalItems; }
+  get request() { return this.data.request; }
+  get aborted() { return this.state === State.unintialized; }
+  get paused() { return this.state === State.paused; }
+  get running() { return this.state === State.running; }
+  get done() { return this.state === State.done; }
+  get queue() { return this.data.queue; }
 
   constructor(private gapi: GoogleAPIService) {
     super((subscriber) => {
@@ -66,24 +67,36 @@ export class SearchObservable extends Observable<Book> {
       this.subscriber.next(book);
       ++this.data.emittedCount;
       if (this.data.emittedCount === this.request.maxResults) {
-        this.state = State.done;
-        this.subscriber.complete();
+        this.complete();
       }
     }
   }
 
+  private complete() {
+    this.state = State.done;
+    this.subscriber.complete();
+  }
+
   private process(volumeList: GoogleAPI.VolumesList) {
     const request = this.data.next;
-    for (const item of volumeList.items) {
+    if (!this.totalItems) {
+      this.data.totalItems = volumeList.totalItems;
+    }
+    let i = 0;
+    for (; i < volumeList.items.length; ++i) {
+      const item = volumeList.items[i];
       if (this.running) {
         this.emit(item);
-      } else if (this.paused) {
-        this.data.queue.push(item);
       } else {
+        this.data.queue.concat(volumeList.items.slice(i));
         break;
       }
     }
-    request.startIndex += volumeList.items.length;
+    if (this.totalItems === this.data.emittedCount) {
+      this.complete();
+      return;
+    }
+    request.startIndex += i;
     this.fetch(request);
   }
 
