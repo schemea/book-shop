@@ -69,8 +69,10 @@ export class SearchInputComponent implements OnInit, OnDestroy {
     // Called once, before the instance is destroyed.
     // Add 'implements OnDestroy' to the class.
 
-    this.subscription.unsubscribe();
-    this.subscription = null;
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
+    }
   }
 
   onEnter(event: Event) {

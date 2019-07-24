@@ -7,3 +7,9 @@
 <app-loading-overlay @fade *ngIf="loading"></app-loading-overlay>
 
 <app-pagination min="1" max="10" [active]="state.page" (pageChange)="onPageChange($event)"></app-pagination>
+
+<a class="btn btn-large" id="shop" [routerLink]="['/cart']" routerLinkActive="active" >
+  <i class="material-icons large">
+    shopping_basket
+  </i>
+</a>

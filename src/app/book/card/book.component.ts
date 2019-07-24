@@ -48,11 +48,9 @@ export class BookComponent implements OnInit, AfterContentInit {
   addCart(event: MouseEvent) {
     event.stopPropagation();
     this.cart.add(Product.fromBook(this.book));
-    const el = event.target as HTMLElement;
-    const clone = el.cloneNode(true);
-    el.parentNode.insertBefore(clone, el);
+    const el = (event.target as HTMLElement).closest("a");
     el.classList.add("pulse");
-    el.addEventListener("transitionend", () => el.remove());
+    el.addEventListener("animationend", () => el.classList.remove("pulse"));
   }
 
   ngAfterContentInit(): void {
