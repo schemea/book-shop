@@ -5,4 +5,4 @@
 
   <app-loading-overlay @fade *ngIf="loading"></app-loading-overlay>
 
-  <app-pagination min="1" max="10" [active]="state.request?.startIndex / 40" (pageChange)="onPageChange($event)"></app-pagination>
+  <app-pagination min="1" max="10" [active]="state.page" (pageChange)="onPageChange($event)"></app-pagination>

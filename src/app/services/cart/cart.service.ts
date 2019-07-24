@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable, PartialObserver, Subscriber } from "rxjs";
 import { LaunchDiscount } from "./discouts";
+import { Product } from "./product";
 
 type ProductID = string | {id: string};
 
@@ -26,6 +27,14 @@ export class CartService {
       this.emitter = subscriber;
     });
 
+    const prod = new Product();
+    prod.description = "descrip";
+    prod.id = "dkqljl";
+    prod.name = "Alice";
+    prod.price = {amount: 10, currencyCode: "EUR"};
+    prod.quantity = 1;
+    prod.thumbnails = null;
+    this.items.set("dkqljl", prod);
     this.discounts.push(LaunchDiscount);
   }
 
