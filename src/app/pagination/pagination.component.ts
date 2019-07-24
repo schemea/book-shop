@@ -32,7 +32,7 @@ export class PaginationComponent implements OnInit {
   }
 
   onClick(event: Event, page: Page) {
-    // event.preventDefault();
+    event.preventDefault();
     this.active = page.index;
   }
 

@@ -1,8 +1,9 @@
+<h1>ERIPHID'S BOOK STORE</h1>
 
-  <app-search-input #input label="Search a book" [(value)]="state.input" (search)="onSearch($event.keywords)"></app-search-input>
+<app-search-input #input label="Search a book" [(value)]="state.input" (search)="onSearch($event.keywords)"></app-search-input>
 
-  <app-book-collection #bookCollection [books]="state.books"></app-book-collection>
+<app-book-collection #bookCollection [books]="state.books"></app-book-collection>
 
-  <app-loading-overlay @fade *ngIf="loading"></app-loading-overlay>
+<app-loading-overlay @fade *ngIf="loading"></app-loading-overlay>
 
-  <app-pagination min="1" max="10" [active]="state.page" (pageChange)="onPageChange($event)"></app-pagination>
+<app-pagination min="1" max="10" [active]="state.page" (pageChange)="onPageChange($event)"></app-pagination>
