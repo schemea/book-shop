@@ -13,6 +13,7 @@ import { LoadingOverlayComponent } from "./loading-overlay/loading-overlay.compo
 import { BookCollectionComponent } from "./book/collection/book-collection.component";
 import { BookDetailsComponent } from "./book/details/book-details.component";
 import { SearchComponent } from "./routing/search/search.component";
+import { DetailsComponent } from './routing/details/details.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { SearchComponent } from "./routing/search/search.component";
     LoadingOverlayComponent,
     BookCollectionComponent,
     BookDetailsComponent,
-    SearchComponent
+    SearchComponent,
+    DetailsComponent
   ],
   imports: [
     BrowserModule,

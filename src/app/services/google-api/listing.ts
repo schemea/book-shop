@@ -10,6 +10,10 @@ export interface SearchResponse {
   totalItems: number;
 }
 export class BookQuery {
+
+  constructor(query?: string) {
+    this.keywords = query || "";
+  }
   intitle: string;
   inauthor: string;
   inpublisher: string;
@@ -19,8 +23,8 @@ export class BookQuery {
   oclc: string;
   keywords: string;
 
-  constructor(query?: string) {
-    this.keywords = query || "";
+  static unserialize(data: any): BookQuery {
+    return Object.assign(Object.create(BookQuery.prototype), data);
   }
 
   toString() {
@@ -37,9 +41,49 @@ export class BookQuery {
   }
 }
 
+export class Filter<T> {
+
+  constructor(path: string, value: any, operation: Filter<T>["operation"]) {
+    this.path = path;
+    this.value = value;
+    this.operation = operation;
+  }
+  path: string;
+  value: any;
+  operation: "equal" | "not_equal";
+
+  static unserialize<T>(data: any): Filter<T> {
+    const filter = Object.assign(Object.create(Filter.prototype), data);
+    return filter;
+  }
+
+  static apply<T>(filters: Filter<T>[], target: T) {
+    return !filters.some(filter => !filter.apply(target));
+  }
+
+  apply(target: T) {
+    const value = this.path.split(".").reduce((prev, curr) => prev[curr], target);
+    switch (this.operation) {
+      case "equal":
+        return this.value === value;
+      case "not_equal":
+        return this.value !== value;
+      default:
+        throw new Error(this.operation + " is not a valid operation");
+    }
+  }
+}
+
 export class SearchRequest {
   query: BookQuery;
-  filter = (book: GoogleAPI.VolumeResource) => true;
+  filters: Filter<GoogleAPI.VolumeResource>[] = [];
+
+  static unserialize(request: any): SearchRequest {
+    const req: SearchRequest = Object.assign(Object.create(SearchRequest.prototype), request);
+    req.filters = req.filters.map(Filter.unserialize);
+    req.query = BookQuery.unserialize(req.query);
+    return req;
+  }
 
   constructor(query?: BookQuery | string, public startIndex: number = 0, public maxResults?: number) {
     this.query = query instanceof BookQuery ? query : new BookQuery(query);

@@ -17,6 +17,10 @@ class SearchEvent extends Event {
 export class SearchInputComponent implements OnInit, OnDestroy {
   @ViewChild("input", null) input: ElementRef<HTMLInputElement>;
   @Input() label: string;
+  @Input() get value() { return this.input.nativeElement.value; }
+  set value(val: string) { this.input.nativeElement.value = val; }
+  // tslint:disable-next-line: no-output-rename
+  @Output("value") valueEmitter = new EventEmitter<string>();
   @Output() search = new EventEmitter<SearchEvent>();
 
   subscription: Subscription;
@@ -25,6 +29,9 @@ export class SearchInputComponent implements OnInit, OnDestroy {
   constructor(private gapi: GoogleAPIService, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
+    if (!this.value) {
+      this.value = "";
+    }
     this.instance = M.Autocomplete.init(this.input.nativeElement, {
       onAutocomplete: this.onSearch.bind(this)
     });

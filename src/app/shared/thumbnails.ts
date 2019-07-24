@@ -12,9 +12,11 @@ enum Sizes {
 export class ThumbnailMap {
 
   constructor(imageLinks: GoogleAPI.ThumbnailMap) {
-    for (const k in Sizes) {
-      if (imageLinks.hasOwnProperty(k)) {
-        this[k] = imageLinks[k];
+    if (imageLinks) {
+      for (const k in Sizes) {
+        if (imageLinks.hasOwnProperty(k)) {
+          this[k] = imageLinks[k];
+        }
       }
     }
   }
@@ -27,6 +29,15 @@ export class ThumbnailMap {
   medium?: string;
   large?: string;
   extraLarge?: string;
+  serialize(): GoogleAPI.ThumbnailMap {
+    const imageLinks = {} as GoogleAPI.ThumbnailMap;
+    for (const k in Sizes) {
+      if (this.hasOwnProperty(k)) {
+        imageLinks[k] = this[k];
+      }
+    }
+    return imageLinks;
+  }
 
   get(size: Sizes | string, falllback: "bigger" | "smaller" | "exact" | "closest" | "closestSmaller" | "closestBigger") {
     const sizeID = typeof size === "number" ? size : Sizes[size];

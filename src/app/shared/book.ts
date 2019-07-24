@@ -1,6 +1,10 @@
 import { ThumbnailMap } from "./thumbnails";
 
 export class Book implements Book {
+
+  constructor(volume: GoogleAPI.VolumeResource) {
+    this.assign(volume);
+  }
   title: string;
   googleID: string;
   selfLink: string;
@@ -10,7 +14,7 @@ export class Book implements Book {
   publisher: string;
   pageCount: number;
   description?: string;
-  identifiers: Map<string, string> = new Map();
+  identifiers: {[k: string]: string} = {};
   rating?: number;
   textSnippet?: string;
   genre: string[];
@@ -19,8 +23,10 @@ export class Book implements Book {
 
   language: "fr" | "en";
 
-  constructor(volume: GoogleAPI.VolumeResource) {
-    this.assign(volume);
+  static unserialize(obj: any): Book {
+    const book: Book = Object.assign(Object.create(Book.prototype), obj);
+    book.thumbnails = Object.assign(Object.create(ThumbnailMap.prototype), book.thumbnails as any);
+    return book;
   }
 
   assign(volume: GoogleAPI.VolumeResource) {
@@ -44,7 +50,7 @@ export class Book implements Book {
     } as Book);
     if (volumeInfo.industryIdentifiers) {
       for (const id of volumeInfo.industryIdentifiers) {
-        this.identifiers.set(id.type, id.identifier);
+        this.identifiers[id.type] = id.identifier;
       }
     }
   }

@@ -1,6 +1,6 @@
 import { Observable, Subscriber, Subscription } from "rxjs";
 import { Book } from "shared/book";
-import { SearchRequest, SearchResponse } from "./listing";
+import { SearchRequest, SearchResponse, Filter } from "./listing";
 import { toArray, map } from "rxjs/operators";
 type GoogleAPIService = import("./google.service").GoogleAPIService;
 
@@ -62,7 +62,7 @@ export class SearchObservable extends Observable<Book> {
   }
 
   private emit(volume: GoogleAPI.VolumeResource) {
-    if (this.request.filter(volume)) {
+    if (Filter.apply(this.request.filters, volume)) {
       const book = new Book(volume);
       this.subscriber.next(book);
       ++this.data.emittedCount;
