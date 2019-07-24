@@ -1,4 +1,11 @@
 <div>
-    <h1>Panier!</h1>
-    <div *ngFor="let item of cart.items | keyvalue">{{ item.value.name }}</div>
+    <h1>YOUR SHOPPING CART</h1>
+    <div *ngFor="let item of cart.items | keyvalue">
+        <ul>
+           <li>Book: {{ item.value.name }}</li>
+           <li>Price: {{ item.value.price.amount }}</li>
+           <li>Quantity: {{ item.value.quantity }}</li>
+           <li>Description: {{ item.value.description }}</li>
+        </ul>    
+    </div>
 </div>
