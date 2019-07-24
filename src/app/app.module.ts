@@ -14,6 +14,7 @@ import { BookCollectionComponent } from "./book/collection/book-collection.compo
 import { BookDetailsComponent } from "./book/details/book-details.component";
 import { SearchComponent } from "./routing/search/search.component";
 import { DetailsComponent } from './routing/details/details.component';
+import { CartComponent } from './cart/cart.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { DetailsComponent } from './routing/details/details.component';
     BookCollectionComponent,
     BookDetailsComponent,
     SearchComponent,
-    DetailsComponent
+    DetailsComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,
