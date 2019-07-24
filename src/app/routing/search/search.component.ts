@@ -88,7 +88,7 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
   onPageChange(page: number) {
     if (this.state.request) {
       const request = this.state.request.clone();
-      request.startIndex = (page - 1) * resultsPerPage;
+      request.startIndex = Math.max(page - 1, 0) * resultsPerPage;
       this.search(request);
     }
   }
