@@ -3,9 +3,11 @@ import { ThumbnailMap } from "shared/thumbnails";
 
 
 export class Product {
+  id: string;
   name: string;
   price: Price;
   thumbnails: ThumbnailMap;
+  quantity = 1;
 
   constructor(obj?: Book) {
     if (obj instanceof Book) {
@@ -17,9 +19,10 @@ export class Product {
     this.name = book.title;
     this.price = book.price;
     this.thumbnails = book.thumbnails;
+    this.id = book.googleID;
   }
 
-  computeDiscountPrice(discounts: Discount[]) {
+  computeDiscountedPrice(discounts: Discount[]) {
     let price = Object.assign({}, this.price);
     for (const discount of discounts) {
       if (discount.target === "product" && discount.validFor(this)) {
