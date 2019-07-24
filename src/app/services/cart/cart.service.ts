@@ -16,7 +16,7 @@ function getProductID(product: ProductID): string {
   providedIn: "root"
 })
 export class CartService {
-  private items = new Map<string, Product>();
+  items = new Map<string, Product>();
   discounts: Discount[] = [];
   private observable: Observable<void>;
   private emitter: Subscriber<void>;
