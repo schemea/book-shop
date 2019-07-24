@@ -10,18 +10,16 @@ export class Product {
   quantity = 1;
   description: string;
 
-  constructor(obj?: Book) {
-    if (obj instanceof Book) {
-      this.initializeFromBook(obj);
-    }
-  }
+  constructor() {  }
 
-  initializeFromBook(book: Book) {
-    this.name = book.title;
-    this.price = book.price;
-    this.thumbnails = book.thumbnails;
-    this.id = book.googleID;
-    this.description = book.description || book.textSnippet;
+  static fromBook(book: Book) {
+    const product = new Product();
+    product.name = book.title;
+    product.price = book.price;
+    product.thumbnails = book.thumbnails;
+    product.id = book.googleID;
+    product.description = book.description || book.textSnippet;
+    return product;
   }
 
   computeDiscountedPrice(discounts: Discount[]) {

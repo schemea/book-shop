@@ -25,6 +25,9 @@
       <div class="rating" *ngIf="book.rating !== undefined">
         <i class="material-icons" *ngFor="let star of getStars()">{{star}}</i>
       </div>
+      <div class="buttons">
+        <i class="material-icons" (click)="addCart($event)">add_shopping_cart</i>
+      </div>
     </div>
 
   </div>

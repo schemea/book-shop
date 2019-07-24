@@ -3,7 +3,7 @@ import { Observable, PartialObserver, Subscriber } from "rxjs";
 import { LaunchDiscount } from "./discouts";
 import { Product } from "./product";
 
-type ProductID = string | {id: string};
+type ProductID = string | { id: string };
 
 function getProductID(product: ProductID): string {
   if (typeof product === "string") {
@@ -17,25 +17,24 @@ function getProductID(product: ProductID): string {
   providedIn: "root"
 })
 export class CartService {
-  items = new Map<string, Product>();
+  items: Map<string, Product>;
   discounts: Discount[] = [];
   private observable: Observable<void>;
   private emitter: Subscriber<void>;
 
   constructor() {
+    this.items = new Map(JSON.parse(localStorage.getItem("cart")) || []);
     this.observable = new Observable(subscriber => {
       this.emitter = subscriber;
     });
 
-    const prod = new Product();
-    prod.description = "descrip";
-    prod.id = "dkqljl";
-    prod.name = "Alice";
-    prod.price = {amount: 10, currencyCode: "EUR"};
-    prod.quantity = 1;
-    prod.thumbnails = null;
-    this.items.set("dkqljl", prod);
     this.discounts.push(LaunchDiscount);
+
+    this.subscribe({
+      next: () => {
+        localStorage.setItem("cart", JSON.stringify([...this.items]));
+      }
+    });
   }
 
   get(product: ProductID) {

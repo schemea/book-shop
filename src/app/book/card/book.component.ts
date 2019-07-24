@@ -4,6 +4,8 @@ import { Book } from "shared/book";
 import M from "materialize-css";
 import { fadeScale } from "shared/animations";
 import { BookDetailsComponent } from "app/book/details";
+import { CartService } from "app/services/cart";
+import { Product } from "app/services/cart/product";
 
 @Component({
   selector: "app-book",
@@ -23,7 +25,7 @@ export class BookComponent implements OnInit, AfterContentInit {
   @ViewChild("card", null) card: ElementRef<HTMLDivElement>;
   modal: M.Modal;
 
-  constructor(private ref: ElementRef<HTMLElement>, private gapi: GoogleAPIService) {
+  constructor(private ref: ElementRef<HTMLElement>, private gapi: GoogleAPIService, private cart: CartService) {
     if (!this.thumbnailSize) {
       this.thumbnailSize = "thumbnail";
     }
@@ -33,6 +35,11 @@ export class BookComponent implements OnInit, AfterContentInit {
     if (this.thumbnailSize !== "thumbnail" && this.thumbnailSize !== "smallThumbnail") {
       this.gapi.retrieveHighResThumbnails(this.book);
     }
+  }
+
+  addCart(event: MouseEvent) {
+    event.stopPropagation();
+    this.cart.add(Product.fromBook(this.book));
   }
 
   ngAfterContentInit(): void {

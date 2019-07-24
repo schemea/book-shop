@@ -62,3 +62,20 @@ $shadow-color: rgba(0, 0, 0, 0.8);
   z-index: 100;
   position: absolute;
 }
+
+.buttons{
+  text-align: right;
+  i{
+    cursor: pointer;
+    transition: background-color 0.2s, opacity 0.1s;
+    &:hover{
+      background-color: gray;
+    }
+  }
+}
+
+:not(:hover) .buttons {
+  i {
+    opacity: 0;
+  }
+}
