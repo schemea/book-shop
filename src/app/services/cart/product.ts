@@ -8,6 +8,7 @@ export class Product {
   price: Price;
   thumbnails: ThumbnailMap;
   quantity = 1;
+  description: string;
 
   constructor(obj?: Book) {
     if (obj instanceof Book) {
@@ -20,6 +21,7 @@ export class Product {
     this.price = book.price;
     this.thumbnails = book.thumbnails;
     this.id = book.googleID;
+    this.description = book.description || book.textSnippet;
   }
 
   computeDiscountedPrice(discounts: Discount[]) {

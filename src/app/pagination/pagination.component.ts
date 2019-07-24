@@ -16,14 +16,15 @@ export class PaginationComponent implements OnInit {
 
   // tslint:disable-next-line: variable-name
   private active_: number;
-  set active(value: number) {
-    this.active_ = value;
-    this.activeEmitter.emit(this.active_);
+  @Input() set active(value: number) {
+    if (value !== this.active_) {
+      this.active_ = value;
+      this.pageChange.emit(this.active_);
+    }
   }
-  @Input() get active() { return this.active_; }
+  get active() { return this.active_; }
 
-  // tslint:disable-next-line: no-output-rename
-  @Output("active") @Output("pageChange") activeEmitter = new EventEmitter<number>();
+  @Output() pageChange = new EventEmitter<number>();
 
   constructor() { }
 
@@ -31,7 +32,7 @@ export class PaginationComponent implements OnInit {
   }
 
   onClick(event: Event, page: Page) {
-    event.preventDefault();
+    // event.preventDefault();
     this.active = page.index;
   }
 

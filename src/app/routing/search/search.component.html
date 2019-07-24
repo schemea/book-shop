@@ -1,8 +1,8 @@
 
-  <app-search-input #input label="Search a book" [(value)]="state.input" (search)="search($event.keywords)"></app-search-input>
+  <app-search-input #input label="Search a book" [(value)]="state.input" (search)="onSearch($event.keywords)"></app-search-input>
 
   <app-book-collection #bookCollection [books]="state.books"></app-book-collection>
 
   <app-loading-overlay @fade *ngIf="loading"></app-loading-overlay>
 
-  <app-pagination min=1 max=5 active=1></app-pagination>
+  <app-pagination min="1" max="10" [active]="state.request?.startIndex / 40" (pageChange)="onPageChange($event)"></app-pagination>

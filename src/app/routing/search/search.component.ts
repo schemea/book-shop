@@ -9,6 +9,8 @@ import { SearchRequest, Filter } from "app/services/google-api/listing";
 import { SearchState } from "./state";
 import { SearchInputComponent } from "app/search-input/search-input.component";
 
+
+const resultsPerPage = 10;
 @Component({
   selector: "app-search",
   templateUrl: "./search.component.html",
@@ -83,23 +85,36 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.abortSearch();
   }
 
-  search(keywords: string) {
+  onPageChange(page: number) {
+    if (this.state.request) {
+      const request = this.state.request.clone();
+      request.startIndex = (page - 1) * resultsPerPage;
+      this.search(request);
+    }
+  }
+
+  onSearch(query: string) {
+    const request = new SearchRequest(query);
+    request.maxResults = resultsPerPage;
+    this.search(request);
+  }
+
+  search(request: SearchRequest) {
     const component = this;
 
-    if (this.state.request && this.state.request.query.toString() === keywords) {
+    request.filters = [new Filter("saleInfo.saleability", "NOT_FOR_SALE", "not_equal")];
+
+    if (this.state.request && this.state.request.toString() === request.toString()) {
       return;
     }
     this.loading = true;
     let books: Book[];
     this.abortSearch();
     this.searchContext = {} as SearchComponent["searchContext"];
-    this.searchContext.observable = this.gapi.searchBooks(keywords, {
-      maxResults: 100,
-      filters: [new Filter("saleInfo.saleability", "NOT_FOR_SALE", "not_equal")]
-    });
-    document.title = keywords + " - Book Search";
+    this.searchContext.observable = this.gapi.searchBooks(request);
+    document.title = request + " - Book Search";
     const state = this.state;
-    state.request = new SearchRequest(keywords);
+    state.request = request;
     state.books = [];
 
     history.pushState(state, document.title, window.location.href);
