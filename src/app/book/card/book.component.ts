@@ -47,7 +47,6 @@ export class BookComponent implements OnInit, AfterContentInit {
 
   addCart(event: MouseEvent) {
     event.stopPropagation();
-    debugger
     this.cart.add(Product.fromBook(this.book));
     const el = event.target as HTMLElement;
     const clone = el.cloneNode(true);
