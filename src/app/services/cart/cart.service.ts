@@ -1,44 +1,76 @@
 import { Injectable } from "@angular/core";
-import { Observable, PartialObserver } from "rxjs";
+import { Observable, PartialObserver, Subscriber } from "rxjs";
+import { LaunchDiscount } from "./discouts";
+
+function getProductID(product: string | { id: string }): string {
+  if (typeof product === "string") {
+    return product;
+  } else {
+    return product.id;
+  }
+}
 
 @Injectable({
   providedIn: "root"
 })
 export class CartService {
-  private items: Product[];
+  private items = new Map<string, Product>();
   discounts: Discount[];
-  private emitter: Observable<void>;
+  private observable: Observable<void>;
+  private emitter: Subscriber<void>;
 
   constructor() {
+    this.observable = new Observable(subscriber => {
+      this.emitter = subscriber;
+    });
 
+    this.discounts.push(LaunchDiscount);
   }
 
   add(...products: Product[]) {
-    this.items.push(...products);
+    products.forEach(product => {
+      const inCart = this.items.get(product.id);
+      if (inCart) {
+        inCart.quantity += product.quantity;
+      } else {
+        this.items.set(product.id, product);
+      }
+    });
+    this.emitter.next();
   }
-  remove(...products: Product[]) {
-    for (const product of products) {
-      this.items.splice(this.items.indexOf(product), 1);
+  remove(...products: (({ id: string, quantity: number } & { [k: string]: any }) | string)[]) {
+    for (const toRemove of products) {
+      const current = this.items.get(getProductID(toRemove));
+      current.quantity -= (toRemove as Product).quantity || 1;
+      if (current.quantity <= 0) {
+        this.items.delete(current.id);
+      }
     }
+    this.emitter.next();
+  }
+
+  clear() {
+    this.items.clear();
+    this.emitter.next();
   }
 
   computeOriginalCost() {
     let total = 0;
-    for (const product of this.items) {
+    this.items.forEach(product => {
       total += product.price.amount;
-    }
+    });
     return total;
   }
   computeDiscountedCost() {
     let total = 0;
-    for (const product of this.items) {
-      const price = product.computeDiscountPrice(this.discounts);
+    this.items.forEach(product => {
+      const price = product.computeDiscountedPrice(this.discounts);
       total += price.amount;
-    }
+    });
     return total;
   }
 
   subscribe(observer: PartialObserver<void>) {
-    this.emitter.subscribe(observer);
+    this.observable.subscribe(observer);
   }
 }
