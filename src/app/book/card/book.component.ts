@@ -7,6 +7,10 @@ import { BookDetailsComponent } from "app/book/details";
 import { CartService } from "app/services/cart";
 import { Product } from "app/services/cart/product";
 
+function round(value: number, p: number) {
+  return Math.round(value * 10 ** p) / 10 ** p;
+}
+
 @Component({
   selector: "app-book",
   templateUrl: "./book.component.html",
@@ -37,9 +41,19 @@ export class BookComponent implements OnInit, AfterContentInit {
     }
   }
 
+  preventEvent(event: Event) {
+    event.stopPropagation();
+  }
+
   addCart(event: MouseEvent) {
     event.stopPropagation();
+    debugger
     this.cart.add(Product.fromBook(this.book));
+    const el = event.target as HTMLElement;
+    const clone = el.cloneNode(true);
+    el.parentNode.insertBefore(clone, el);
+    el.classList.add("pulse");
+    el.addEventListener("transitionend", () => el.remove());
   }
 
   ngAfterContentInit(): void {

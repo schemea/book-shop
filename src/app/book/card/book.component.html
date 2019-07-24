@@ -26,7 +26,9 @@
         <i class="material-icons" *ngFor="let star of getStars()">{{star}}</i>
       </div>
       <div class="buttons">
-        <i class="material-icons" (click)="addCart($event)">add_shopping_cart</i>
+        <a class="btn-floating" (mousedown)="preventEvent($event)">
+          <i class="material-icons" (click)="addCart($event)">add_shopping_cart</i>
+        </a>
       </div>
     </div>
 

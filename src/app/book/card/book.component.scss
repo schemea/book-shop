@@ -4,6 +4,19 @@
 $border: 1px solid #ccc;
 $shadow-color: rgba(0, 0, 0, 0.8);
 
+@keyframes pulse{
+  0%{
+    transform: scale(1);
+    opacity: 1;
+  }
+  75%{
+    opacity: 1;
+  }
+  100%{
+    transform: scale(1.25);
+    opacity: 0;
+  }
+}
 
 @keyframes card-spawn{
   0%{
@@ -63,19 +76,26 @@ $shadow-color: rgba(0, 0, 0, 0.8);
   position: absolute;
 }
 
-.buttons{
-  text-align: right;
-  i{
-    cursor: pointer;
-    transition: background-color 0.2s, opacity 0.1s;
-    &:hover{
-      background-color: gray;
-    }
-  }
+.pulse{
+  animation: pulse 0.2s ease-out;
 }
 
-:not(:hover) .buttons {
-  i {
+.buttons{
+  text-align: right;
+  a {
+    transition: opacity 0.1s, filter 0.2s;
+    &:hover{
+      filter: brightness(1.1);
+    }
+  }
+
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+}
+
+:host:not(:hover) .buttons {
+  a {
     opacity: 0;
   }
 }

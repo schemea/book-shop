@@ -6,7 +6,7 @@
            <li>Book: {{ item.value.name }}</li>
            <li>Price: {{ item.value.price.amount }}</li>
            <li>Quantity: {{ item.value.quantity }}</li>
-           <li><i class="remove_shopping_cart">add</i></li>
-        </ul>    
+           <li><i class="material-icons" (click)="removeProduct(item.value.id)">remove_shopping_cart</i></li>
+        </ul>
     </div>
 </div>
