@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Observable, PartialObserver } from "rxjs";
 
 @Injectable({
   providedIn: "root"
@@ -6,8 +7,11 @@ import { Injectable } from "@angular/core";
 export class CartService {
   private items: Product[];
   discounts: Discount[];
+  private emitter: Observable<void>;
 
-  constructor() { }
+  constructor() {
+
+  }
 
   add(...products: Product[]) {
     this.items.push(...products);
@@ -32,5 +36,9 @@ export class CartService {
       total += price.amount;
     }
     return total;
+  }
+
+  subscribe(observer: PartialObserver<void>) {
+    this.emitter.subscribe(observer);
   }
 }
