@@ -1,0 +1,5 @@
+<ul class="pagination">
+  <li><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+  <li *ngFor="let page of getPages()" [ngClass]="{'waves-effect': !page.active, 'active': page.active}" (click)="onClick($event, page)"><a href="#!">{{page.index}}</a></li>
+  <li><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+</ul>

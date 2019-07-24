@@ -13,8 +13,9 @@ import { LoadingOverlayComponent } from "./loading-overlay/loading-overlay.compo
 import { BookCollectionComponent } from "./book/collection/book-collection.component";
 import { BookDetailsComponent } from "./book/details/book-details.component";
 import { SearchComponent } from "./routing/search/search.component";
-import { DetailsComponent } from './routing/details/details.component';
-import { CartComponent } from './cart/cart.component';
+import { DetailsComponent } from "./routing/details/details.component";
+import { CartComponent } from "./cart/cart.component";
+import { PaginationComponent } from "./pagination/pagination.component";
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { CartComponent } from './cart/cart.component';
     BookDetailsComponent,
     SearchComponent,
     DetailsComponent,
-    CartComponent
+    CartComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,

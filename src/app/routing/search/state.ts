@@ -21,6 +21,9 @@ export class SearchState {
   input: string;
 
   constructor(state: SearchState | { [k: string]: any }) {
+    if (!state) {
+      state = { };
+    }
     this.books = unserializeArray(state.books, Book, []);
     this.request = unserialize(state.request, SearchRequest, null);
     this.input = state.input || "";

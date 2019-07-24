@@ -2,7 +2,9 @@ import { Injectable } from "@angular/core";
 import { Observable, PartialObserver, Subscriber } from "rxjs";
 import { LaunchDiscount } from "./discouts";
 
-function getProductID(product: string | { id: string }): string {
+type ProductID = string | {id: string};
+
+function getProductID(product: ProductID): string {
   if (typeof product === "string") {
     return product;
   } else {
@@ -25,6 +27,10 @@ export class CartService {
     });
 
     this.discounts.push(LaunchDiscount);
+  }
+
+  get(product: ProductID) {
+    return this.items.get(getProductID(product));
   }
 
   add(...products: Product[]) {

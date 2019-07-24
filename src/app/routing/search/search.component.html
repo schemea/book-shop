@@ -4,3 +4,5 @@
   <app-book-collection #bookCollection [books]="state.books"></app-book-collection>
 
   <app-loading-overlay @fade *ngIf="loading"></app-loading-overlay>
+
+  <app-pagination min=1 max=5 active=1></app-pagination>

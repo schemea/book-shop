@@ -17,8 +17,11 @@ class SearchEvent extends Event {
 export class SearchInputComponent implements OnInit, OnDestroy {
   @ViewChild("input", null) input: ElementRef<HTMLInputElement>;
   @Input() label: string;
-  @Input() get value() { return this.input.nativeElement.value; }
-  set value(val: string) { this.input.nativeElement.value = val; }
+  // tslint:disable-next-line: variable-name
+  private _value: string;
+
+  @Input() get value() { return this._value; }
+  set value(val: string) { this._value = val; this.valueEmitter.emit(this._value); }
   // tslint:disable-next-line: no-output-rename
   @Output("value") valueEmitter = new EventEmitter<string>();
   @Output() search = new EventEmitter<SearchEvent>();
