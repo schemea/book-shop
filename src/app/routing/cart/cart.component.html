@@ -2,11 +2,6 @@
     <!-- <h5>ERIPHID'S BOOK STORE</h5> -->
     <h3>YOUR SHOPPING CART</h3>
     <div *ngFor="let item of cart.items | keyvalue">
-        <ul>
-           <li>Book: {{ item.value.name }}</li>
-           <li>Price: {{ item.value.price?.amount }}</li>
-           <li>Quantity: {{ item.value.quantity }}</li>
-           <li><i class="material-icons" (click)="removeProduct(item.value.id)">remove_shopping_cart</i></li>
-        </ul>
+      <app-product [value]="item.value" (remove)="removeProduct($event)"></app-product>
     </div>
 </div>

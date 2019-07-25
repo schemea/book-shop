@@ -1,0 +1,6 @@
+<ul>
+    <li>Book: {{ value.name }}</li>
+    <li>Price: {{ value.price?.amount }}</li>
+    <li>Quantity: {{ value.quantity }}</li>
+    <li><i class="material-icons" (click)="remove.emit(value)">remove_shopping_cart</i></li>
+ </ul>

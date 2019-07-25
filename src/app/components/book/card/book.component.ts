@@ -3,7 +3,7 @@ import { GoogleAPIService } from "services/google-api";
 import { Book } from "shared/book";
 import M from "materialize-css";
 import { fadeScale } from "shared/animations";
-import { BookDetailsComponent } from "app/book/details";
+import { BookDetailsComponent } from "app/components/book/details";
 import { CartService } from "app/services/cart";
 import { Product } from "app/services/cart/product";
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from "@angular/core";
 import { Book } from "shared/book";
-import { ImageComponent } from "app/image/image.component";
+import { ImageComponent } from "app/components/image/image.component";
 
 @Component({
   selector: "app-book-details",
