@@ -9,8 +9,8 @@ export class Book implements Book {
   googleID: string;
   selfLink: string;
   saleability: GoogleAPI.Saleability;
-  price: GoogleAPI.Price;
-  authors: string[];
+  price?: GoogleAPI.Price;
+  authors?: string[];
   publisher: string;
   pageCount: number;
   description?: string;

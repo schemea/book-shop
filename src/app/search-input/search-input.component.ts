@@ -53,8 +53,10 @@ export class SearchInputComponent implements OnInit, OnDestroy {
         }, {});
         this.instance.updateData(map);
         (this.instance as any).open();
-        this.subscription.unsubscribe();
-        this.subscription = null;
+        if (this.subscription) {
+          this.subscription.unsubscribe();
+          this.subscription = null;
+        }
       },
       error: (e) => {
         console.error(e);

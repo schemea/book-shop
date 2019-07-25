@@ -7,6 +7,7 @@ import { bookAPI, autoCompletion } from "./constants";
 import { map, take } from "rxjs/operators";
 import { SearchObservable } from "./search";
 import { ThumbnailMap } from "shared/thumbnails";
+import { CacheService } from "../cache";
 
 type SearchParams = {
   [k in keyof SearchRequest]?: SearchRequest[k]
@@ -37,20 +38,20 @@ interface RequestOptions {
 })
 export class GoogleAPIService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private cache: CacheService) { }
 
   request(url: SearchRequest): Observable<GoogleAPI.VolumesList>;
   request<T>(url: URL | string, options?: RequestOptions): Observable<T>;
   request(url: URL | any, options: RequestOptions = {}) {
     if (!(url instanceof URL)) {
-      url = new URL(url as string, window.location as any);
+      url = new URL(url, window.location.href);
     }
     for (const key in options.params) {
       if (options.params.hasOwnProperty(key)) {
         (url as URL).searchParams.set(key, options.params[key] as string);
       }
     }
-    return this.http.get(url.toString(), options);
+    return this.cache.get(url.toString(), options);
   }
 
   async getBookByISBN(value: string) {
@@ -67,7 +68,7 @@ export class GoogleAPIService {
   searchBooks(request: SearchRequest | BookQuery | string, params?: SearchParams): SearchObservable {
     const req = makeSearchRequest(request, params);
     const obs = new SearchObservable(this);
-    obs.start(req);
+    obs.get(req);
     return obs;
   }
 

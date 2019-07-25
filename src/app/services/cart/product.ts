@@ -5,7 +5,7 @@ import { ThumbnailMap } from "shared/thumbnails";
 export class Product {
   id: string;
   name: string;
-  price: Price;
+  price?: Price;
   thumbnails: ThumbnailMap;
   quantity = 1;
   description: string;

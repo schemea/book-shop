@@ -1,4 +1,4 @@
-import { Observable, Subscriber, Subscription } from "rxjs";
+import { Observable, Subscriber, Subscription, PartialObserver } from "rxjs";
 import { Book } from "shared/book";
 import { SearchRequest, SearchResponse, Filter } from "./listing";
 import { toArray, map } from "rxjs/operators";
@@ -36,14 +36,23 @@ export class SearchObservable extends Observable<Book> {
     });
   }
 
-  start(request: SearchRequest) {
+  get(request: SearchRequest) {
     this.data.request = request;
     this.data.next = request.clone();
     this.state = State.paused;
+  }
+
+  subscribe(...args: any[]): Subscription {
+    // tslint:disable-next-line: deprecation
+    const subscription = Observable.prototype.subscribe.call(this, ...args);
     this.resume();
+    return subscription;
   }
 
   resume() {
+    if (!this.subscriber) {
+      throw new Error("cannot start or resume before subscribing");
+    }
     if (!this.paused) {
       return;
     }
