@@ -23,9 +23,9 @@ export class CartService {
   private emitter: Subscriber<void>;
 
   constructor() {
-    const savedItems: [] = JSON.parse(localStorage.getItem("cart"));
+    const savedItems: ([string, Product])[] = JSON.parse(localStorage.getItem("cart"));
     if (savedItems) {
-      this.items = new Map(savedItems.map(data => Object.assign(Object.create(Product.prototype), data)));
+      this.items = new Map(savedItems.map(([id, data]) => [data.id, Object.assign(Object.create(Product.prototype), data)]));
     } else {
       this.items = new Map();
     }
@@ -90,7 +90,7 @@ export class CartService {
         total += price.amount;
       }
     });
-    return total;
+    return Math.round(total * 100) / 100;
   }
 
   subscribe(observer: PartialObserver<void>) {
