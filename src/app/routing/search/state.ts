@@ -19,6 +19,7 @@ export class SearchState {
   books: { [k: string]: string | number | any }[];
   request: SearchRequest;
   input: string;
+  page: number;
 
   constructor(state: SearchState | { [k: string]: any }) {
     if (!state) {
@@ -27,5 +28,6 @@ export class SearchState {
     this.books = unserializeArray(state.books, Book, []);
     this.request = unserialize(state.request, SearchRequest, null);
     this.input = state.input || "";
+    this.page = state.page || 1;
   }
 }
