@@ -16,6 +16,7 @@ import { SearchComponent } from "./routing/search/search.component";
 import { DetailsComponent } from "./routing/details/details.component";
 import { CartComponent } from "./cart/cart.component";
 import { PaginationComponent } from "./pagination/pagination.component";
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { PaginationComponent } from "./pagination/pagination.component";
     SearchComponent,
     DetailsComponent,
     CartComponent,
-    PaginationComponent
+    PaginationComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
