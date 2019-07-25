@@ -1,6 +1,5 @@
 import { Component } from "@angular/core";
 import { GoogleAPIService } from "services/google-api";
-import { child, fade } from "shared/animations";
 
 @Component({
   selector: "app-root",

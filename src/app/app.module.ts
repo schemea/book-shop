@@ -14,9 +14,9 @@ import { BookCollectionComponent } from "./book/collection/book-collection.compo
 import { BookDetailsComponent } from "./book/details/book-details.component";
 import { SearchComponent } from "./routing/search/search.component";
 import { DetailsComponent } from "./routing/details/details.component";
-import { CartComponent } from "./cart/cart.component";
+import { CartComponent } from "./routing/cart/cart.component";
 import { PaginationComponent } from "./pagination/pagination.component";
-import { HeaderComponent } from './header/header.component';
+import { HeaderComponent } from "./header/header.component";
 
 @NgModule({
   declarations: [
