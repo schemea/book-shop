@@ -4,4 +4,9 @@
     <div *ngFor="let item of cart.items | keyvalue">
       <app-product [value]="item.value" (remove)="removeProduct($event)"></app-product>
     </div>
+
+    <div>
+      Total: {{cart.computeOriginalCost()}} €<br>
+      Discouted Price: {{cart.computeDiscountedCost()}} €
+    </div>
 </div>

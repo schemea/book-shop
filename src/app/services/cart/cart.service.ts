@@ -23,7 +23,12 @@ export class CartService {
   private emitter: Subscriber<void>;
 
   constructor() {
-    this.items = new Map(JSON.parse(localStorage.getItem("cart")) || []);
+    const savedItems: [] = JSON.parse(localStorage.getItem("cart"));
+    if (savedItems) {
+      this.items = new Map(savedItems.map(data => Object.assign(Object.create(Product.prototype), data)));
+    } else {
+      this.items = new Map();
+    }
     this.observable = new Observable(subscriber => {
       this.emitter = subscriber;
     });
@@ -71,15 +76,19 @@ export class CartService {
   computeOriginalCost() {
     let total = 0;
     this.items.forEach(product => {
-      total += product.price.amount;
+      if (product.price) {
+        total += product.price.amount;
+      }
     });
     return total;
   }
   computeDiscountedCost() {
     let total = 0;
     this.items.forEach(product => {
-      const price = product.computeDiscountedPrice(this.discounts);
-      total += price.amount;
+      if (product.price) {
+        const price = product.computeDiscountedPrice(this.discounts);
+        total += price.amount;
+      }
     });
     return total;
   }

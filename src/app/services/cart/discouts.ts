@@ -10,7 +10,7 @@ export const TenOfSame: Discount = {
 };
 
 export const LaunchDiscount: Discount = {
-  target: "cart",
+  target: "product",
   validFor: () => true,
   discountedPrice: price => multiplyBy(price, 0.9),
   display: "-5% Discount"

@@ -7,7 +7,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { BookComponent } from "./components/book/card";
 import { FormsModule} from "@angular/forms";
 import { ImageComponent } from "./components/image/image.component";
-import { SearchInputComponent } from "./search-input/search-input.component";
+import { SearchInputComponent } from "./components/search-input/search-input.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { LoadingOverlayComponent } from "./components/loading-overlay/loading-overlay.component";
 import { BookCollectionComponent } from "./components/book/collection/book-collection.component";

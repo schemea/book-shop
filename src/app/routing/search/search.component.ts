@@ -7,7 +7,7 @@ import { delay, concatMap } from "rxjs/operators";
 import { fade } from "shared/animations";
 import { SearchRequest, Filter } from "app/services/google-api/listing";
 import { SearchState } from "./state";
-import { SearchInputComponent } from "app/search-input/search-input.component";
+import { SearchInputComponent } from "app/components/search-input/search-input.component";
 
 
 const resultsPerPage = 10;
